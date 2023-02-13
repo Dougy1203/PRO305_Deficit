@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  log_create:
+    build: ./log_create
+    image: log_create:1.0
+  log_delete:
+    build: ./log_delete
+    image: log_delete:1.0
+  log_read:
+    build: ./log_read
+    image: log_read:1.0
+  log_update:
+    build: ./log_update
+    image: log_update:1.0
+  user_create:
+    build: ./user_create
+    image: user_create:1.0
+  user_delete:
+    build: ./user_delete
+    image: user_delete:1.0
+  user_login:
+    build: ./user_login
+    image: user_login:1.0
+  user_read:
+    build: ./user_read
+    image: user_read:1.0
+  user_update:
+    build: ./user_update
+    image: user_update:1.0

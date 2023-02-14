@@ -1,55 +1,27 @@
 import json
 import boto3
 from boto3.dynamodb.conditions import Key
+import os
 from os import getenv
 from uuid import uuid4
 import pymongo
+from dotenv import load_dotenv
 
-region_name = getenv('APP_REGION')
+load_dotenv(dotenv_path='./.env')
 
-performers_table = boto3.resource(
-    'dynamodb',
-    region_name=region_name
-    ).Table('Performers')
+dynamo_client = boto3.resource(
+    service_name="dynamodb",
+    region_name="us-east-1",
+    aws_access_key_id= os.environ.get('AWS_ACCESS_KEY'),
+    aws_secret_access_key= os.environ.get('AWS_SECRET_ACCESS_KEY'),
+)
+
+performance_table = dynamo_client.Table("performances")
+performer_table = dynamo_client.Table("performers")
 
 def lambda_handler(event, context):
     request_body = json.loads(event['body'])
 
-    try:
-        response = performers_table.query(
-            KeyConditionExpression=Key('email_address').eq(request_body['email_address'])
-        )
-        items = response['Items']
-        email = request_body['email_address']
-
-        if(items):
-            return request_response(400, {'message' : f'Performer with "{email}" already exists'})
-        else:
-            performers_table.put_item(
-                Item={
-                    'Id' : str(uuid4()),
-                    "name" : request_body["name"],
-                    "email_address" : request_body["email_address"],
-                    "phone_number" : request_body["phone_number"],
-                    "role" : request_body["role"],
-                    "password" : request_body['password'],
-                    "performances_participated_in" : json.dumps(request_body["performances_participated_in"]),
-                    "performances_currently_in" : request_body["performances_currently_in"]
-            })
-
-        return request_response(200, {'message' : 'Performer created!'})
-    except Exception as e:
-        print(e)
-        return request_response(400, {'message' : 'Could not create performer.'})
-
-def request_response(status_code, body):
-    return {
-        "statusCode" : status_code,
-        "headers" : {
-            "Content-Type" : "application/json"
-        },
-        "body" : json.dumps(body)
-    }
 
 # performer = lambda_handler({
 #     'body' : {

@@ -3,4 +3,4 @@ deficit/local.properties
 Team_Evaluation_2-10.docx
 Team_Evaluation_Template.docx
 deficit/local.properties
-*.env
+.env

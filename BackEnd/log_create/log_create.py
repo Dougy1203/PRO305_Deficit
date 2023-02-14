@@ -5,35 +5,42 @@ import os
 from os import getenv
 from uuid import uuid4
 import pymongo
+from pymongo import MongoClient
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path='./.env')
+# load_dotenv(dotenv_path='./.env')
+load_dotenv()
+MONGO_STRING = os.getenv('MONGO_CONNECTION_STRING')
+AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
 dynamo_client = boto3.resource(
     service_name="dynamodb",
     region_name="us-east-1",
-    aws_access_key_id= os.environ.get('AWS_ACCESS_KEY'),
-    aws_secret_access_key= os.environ.get('AWS_SECRET_ACCESS_KEY'),
+    aws_access_key_id= AWS_ACCESS_KEY,
+    aws_secret_access_key= AWS_SECRET_ACCESS_KEY,
 )
+myclient = MongoClient(MONGO_STRING)
+myclient.server_info()
+mydb = myclient["Deficit"]
+mycol = mydb["Users"]
+x = mycol.insert_one({"user_name":"Soumi"})
+print(x.inserted_id)
 
-performance_table = dynamo_client.Table("performances")
-performer_table = dynamo_client.Table("performers")
+tables = list(dynamo_client.tables.all())
+print(tables)
+# performer_table = dynamo_client.Table("performers")
 
 def lambda_handler(event, context):
-    request_body = json.loads(event['body'])
+    request_body = event['body']
+    try:
+        print('my bed... right now')
+        print(request_body)
+    except Exception as e:
+        print(e)
 
-
-# performer = lambda_handler({
-#     'body' : {
-        # 'name' : 'Robert Brunney',
-        # 'email_address' : 'hisbedrightnow@gmail.com',
-        # 'phone_number' : '865-234-2947',
-        # 'password' : 'pwd123',
-        # 'role' : 'performer',
-        # 'performances_participated_in' : [],
-        # 'performances_currently_in' : ''
-#     }},
-#     None
-#     )
-
-# print(performer)
+performer = lambda_handler({
+    'body' : 'hello world'
+    },
+    None
+    )

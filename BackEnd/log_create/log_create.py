@@ -39,7 +39,11 @@ def lambda_handler(event, context):
         print(e)
 
 performer = lambda_handler({
-    'body' : 'hello world'
+    'body' : {
+        'email' : '',
+        'password' : '',
+        'log' : [],
+    }
     },
     None
     )

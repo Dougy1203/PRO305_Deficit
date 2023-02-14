@@ -8,8 +8,8 @@ import pymongo
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
-# load_dotenv(dotenv_path='./.env')
 load_dotenv()
+
 MONGO_STRING = os.getenv('MONGO_CONNECTION_STRING')
 AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
@@ -20,16 +20,15 @@ dynamo_client = boto3.resource(
     aws_access_key_id= AWS_ACCESS_KEY,
     aws_secret_access_key= AWS_SECRET_ACCESS_KEY,
 )
-myclient = MongoClient(MONGO_STRING)
-myclient.server_info()
-mydb = myclient["Deficit"]
-mycol = mydb["Users"]
-x = mycol.insert_one({"user_name":"Soumi"})
-print(x.inserted_id)
 
-tables = list(dynamo_client.tables.all())
-print(tables)
-# performer_table = dynamo_client.Table("performers")
+log_table = dynamo_client.Table("Logs")
+
+mongo_client = MongoClient(MONGO_STRING)
+
+deficit_table = mongo_client["Deficit"]
+users_collection = deficit_table["Users"]
+# x = users_collection.insert_one({"user_name":"Soumi"})
+# print(x.inserted_id)
 
 def lambda_handler(event, context):
     request_body = event['body']

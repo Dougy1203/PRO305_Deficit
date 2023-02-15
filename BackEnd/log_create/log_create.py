@@ -7,6 +7,7 @@ from uuid import uuid4
 import pymongo
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv()
 
@@ -32,17 +33,43 @@ users_collection = deficit_table["Users"]
 
 def lambda_handler(event, context):
     request_body = event['body']
+
+    current_time = datetime.now()
+    current_date = f'{current_time.month}/{current_time.day}/{current_time.year}'
+
+    table_logs = log_table.query(
+        KeyConditionExpression=Key('email').eq(request_body['email'])
+    )
+    macro_logs = table_logs["Items"]
+
+    print(macro_logs)
+    print(macro_logs[0]['email'])
     try:
-        print('my bed... right now')
-        print(request_body)
+        #print(request_body)
+        if(macro_logs[0]['date']):
+            print('There is already a log for that day, please update that log instead.')
+        else:
+            log_table.put_item(
+                Item={
+                    'email' : request_body['email'],
+                    'fat' : request_body['fat'],
+                    'carb' : request_body['carb'],
+                    'protein' : request_body['protein'],
+                    'calories' : request_body['calories'],
+                    'date' : '2/14/2023'
+                },
+            )
+            print('Log created.')
     except Exception as e:
         print(e)
 
-performer = lambda_handler({
+log = lambda_handler({
     'body' : {
-        'email' : '',
-        'password' : '',
-        'log' : [],
+        'email' : 'cstanley@gmail.com',
+        'fat' : 23,
+        'carb' : 42,
+        'protein' : 30,
+        'calories' : 490
     }
     },
     None

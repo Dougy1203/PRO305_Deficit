@@ -33,16 +33,16 @@ users_collection = deficit_table["Users"]
 def lambda_handler(event, context):
     request_body = event['body']
 
-    table_logs = log_table.query(
-        KeyConditionExpression=Key('email').eq(request_body['email'])
-    )
-    logs = table_logs["Items"]
-
-    print(logs)
     try:
-        #print(request_body)
+        table_logs = log_table.query(
+            KeyConditionExpression=Key('email').eq(request_body['email'])
+        )
+        logs = table_logs["Items"]
         if(logs):
-            print('There is already a log for that email.')
+            print(f'There is Already a Log for the Email: {request_body["email"]}')
+            return{
+                'body' : f'There is Already a Log for the Email: {request_body["email"]}'
+            }
         else:
             log_table.put_item(
                 Item={
@@ -50,9 +50,11 @@ def lambda_handler(event, context):
                     'logs' : request_body['logs']
                 },
             )
-            print('Log created.')
+            print(f'Log Created with Email: {request_body["email"]}')
+            
     except Exception as e:
         print(e)
+        
 
 # TODO add in password authentication.
 log = lambda_handler({

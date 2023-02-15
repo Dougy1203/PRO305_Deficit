@@ -7,6 +7,7 @@ from uuid import uuid4
 import pymongo
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv()
 
@@ -32,17 +33,27 @@ users_collection = deficit_table["Users"]
 
 def lambda_handler(event, context):
     request_body = event['body']
+
+    current_time = datetime.now()
+    current_date = f'{current_time.month}/{current_time.day}/{current_time.year}'
+
     try:
-        print('my bed... right now')
         print(request_body)
     except Exception as e:
         print(e)
 
+# TODO add in password authentication once based logic works
 performer = lambda_handler({
     'body' : {
-        'email' : '',
-        'password' : '',
-        'log' : [],
+        'email' : 'cstanley@gmail.com',
+        'log' : [
+            {
+            'fat' : 20,
+            'carb': 15,
+            'protein' : 20,
+            'calories' : 300
+            },
+        ],
     }
     },
     None

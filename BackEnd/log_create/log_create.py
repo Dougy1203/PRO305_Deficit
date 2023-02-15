@@ -7,7 +7,6 @@ from uuid import uuid4
 import pymongo
 from pymongo import MongoClient
 from dotenv import load_dotenv
-from datetime import datetime
 
 load_dotenv()
 
@@ -34,9 +33,6 @@ users_collection = deficit_table["Users"]
 def lambda_handler(event, context):
     request_body = event['body']
 
-    current_time = datetime.now()
-    current_date = f'{current_time.month}/{current_time.day}/{current_time.year}'
-
     table_logs = log_table.query(
         KeyConditionExpression=Key('email').eq(request_body['email'])
     )
@@ -58,6 +54,7 @@ def lambda_handler(event, context):
     except Exception as e:
         print(e)
 
+# TODO add in password authentication.
 log = lambda_handler({
     'body' : {
         'email' : 'cstanley@gmail.com',

@@ -39,9 +39,9 @@ def lambda_handler(event, context):
         )
         logs = table_logs["Items"]
         if(logs):
-            print(f'There is Already a Log for the Email: {request_body["email"]}')
+            print(f'There is already a Log for the Email: {request_body["email"]}')
             return{
-                'body' : f'There is Already a Log for the Email: {request_body["email"]}'
+                'body' : f'There is already a Log for the Email: {request_body["email"]}'
             }
         else:
             log_table.put_item(
@@ -60,6 +60,7 @@ def lambda_handler(event, context):
 log = lambda_handler({
     'body' : {
         'email' : 'cstanley@gmail.com',
+        'password' : 'root',
         'logs' : [],
     }
     },

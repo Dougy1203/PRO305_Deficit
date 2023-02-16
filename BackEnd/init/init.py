@@ -61,11 +61,7 @@ def lambda_handler(event, context):
             log_table.put_item(
                 Item={
                     'email' : liam,
-                    'fat' : 23,
-                    'carb' : 42,
-                    'protein' : 30,
-                    'calories' : 490,
-                    'date' : current_date
+                    'logs' : json.dumps([])
                 },
             )
 
@@ -82,11 +78,7 @@ def lambda_handler(event, context):
             log_table.put_item(
                 Item={
                     'email' : chris,
-                    'fat' : 23,
-                    'carb' : 42,
-                    'protein' : 30,
-                    'calories' : 490,
-                    'date' : current_date
+                    'logs' : json.dumps([])
                 },
             )
     except Exception as e:

@@ -7,7 +7,6 @@ from uuid import uuid4
 import pymongo
 from pymongo import MongoClient
 from dotenv import load_dotenv
-from datetime import datetime
 
 load_dotenv()
 
@@ -33,8 +32,6 @@ users_collection = deficit_table["Users"]
 
 def lambda_handler(event, context):
     request_body = event['body']
-    current_time = datetime.now()
-    current_date = f'{current_time.month}/{current_time.day}/{current_time.year}'
 
     try:
         table_logs = log_table.query(
@@ -44,32 +41,68 @@ def lambda_handler(event, context):
         log_data = logs[0]
         log_list = log_data['logs']
 
-        # print(len(log_list))
-
-        for log in log_list:
-            if(log is None):
-                print('log is empty')
-            else:
-                print('Adding to log')
+        #print('log list length:')
+        #print(len(log_list))
+        print(log_list)
         
-        if(logs):
+        if(len(log_list) == 0):
 
             log = {
                 'fat' : request_body['log']['fat'],
                 'carb' : request_body['log']['carb'],   
                 'protein' : request_body['log']['protein'],
                 'calories' : request_body['log']['calories'],
-                'date' : current_date
+                'date' : request_body['log']['date']
             }
 
-            log_list.append(json.dumps(log))
-            print(log_list)
-            return{
-                'body' : f'There is already a Log for the Email: {request_body["email"]}'
-            }
+            log_list.append(log)
+            #print(log_list)
+
+            log_table.update_item(
+                Key={
+                    'email' : request_body['email']
+                },
+                UpdateExpression= "SET #ts= :val1",
+                ExpressionAttributeValues={
+                    ':val1' : log_list
+                },
+                ExpressionAttributeNames={
+                    '#ts' : 'logs'
+                }
+            )
+            print('Log updated.')
         else:
-            print(f'There are no logs associated with that email.')
-            
+            for log in log_list:
+                #print(log)
+                if(log['date'] == request_body['log']['date']):
+                    print('adding to log')
+
+                else:
+                    print('Creating new log')
+                    log = {
+                        'fat' : request_body['log']['fat'],
+                        'carb' : request_body['log']['carb'],   
+                        'protein' : request_body['log']['protein'],
+                        'calories' : request_body['log']['calories'],
+                        'date' : request_body['log']['date']
+                    }
+
+                    log_list.append(log)
+                    #print(log_list)
+
+                    log_table.update_item(
+                        Key={
+                            'email' : request_body['email']
+                        },
+                        UpdateExpression= "SET #ts= :val1",
+                        ExpressionAttributeValues={
+                            ':val1' : log_list
+                        },
+                        ExpressionAttributeNames={
+                            '#ts' : 'logs'
+                        }
+                    )
+                    print('Log updated.')
     except Exception as e:
         print(e)
 
@@ -83,7 +116,8 @@ log = lambda_handler({
             'fat' : 20,
             'carb': 15,
             'protein' : 20,
-            'calories' : 300
+            'calories' : 300,
+            'date' : '2/20/2023'
             },
     }
     },

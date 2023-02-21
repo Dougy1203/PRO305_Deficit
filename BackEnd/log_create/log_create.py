@@ -47,7 +47,7 @@ def lambda_handler(event, context):
             log_table.put_item(
                 Item={
                     'email' : request_body['email'],
-                    'logs' : json.dumps(request_body['logs'])
+                    'logs' : request_body['logs']
                 },
             )
             print(f'Log Created with Email: {request_body["email"]}')

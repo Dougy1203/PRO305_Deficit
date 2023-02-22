@@ -22,7 +22,7 @@ dynamo_client = boto3.resource(
     aws_secret_access_key= AWS_SECRET_ACCESS_KEY,
 )
 
-log_table = dynamo_client.Table("Log")
+log_table = dynamo_client.Table("Logs")
 
 mongo_client = MongoClient(MONGO_STRING)
 
@@ -40,10 +40,10 @@ def lambda_handler(event, context):
         liam = 'liamd1203@gmail.com'
         chris = 'cstanley@gmail.com'
 
-        current_time = datetime.now()
-        current_date = f'{current_time.month}/{current_time.day}/{current_time.year}'
+        # current_time = datetime.now()
+        # current_date = f'{current_time.month}/{current_time.day}/{current_time.year}'
 
-        print(current_date)
+        # print(current_date)
 
         users_collection.insert_one({'email' : liam, 'password' : 'root', 'firstName' : 'Liam', 'lastName' : 'Douglas', 'goal' : json.dumps({})})
         users_collection.insert_one({'email' : chris, 'password' : 'root', 'firstName' : 'Christopher', 'lastName' : 'Stanley', 'goal' : json.dumps({})})
@@ -61,7 +61,7 @@ def lambda_handler(event, context):
             log_table.put_item(
                 Item={
                     'email' : liam,
-                    'logs' : json.dumps([])
+                    'logs' : []
                 },
             )
 
@@ -78,7 +78,7 @@ def lambda_handler(event, context):
             log_table.put_item(
                 Item={
                     'email' : chris,
-                    'logs' : json.dumps([])
+                    'logs' : []
                 },
             )
     except Exception as e:

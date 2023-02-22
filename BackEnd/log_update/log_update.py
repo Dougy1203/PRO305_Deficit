@@ -21,7 +21,7 @@ dynamo_client = boto3.resource(
     aws_secret_access_key= AWS_SECRET_ACCESS_KEY,
 )
 
-log_table = dynamo_client.Table("Log")
+log_table = dynamo_client.Table("Logs")
 
 mongo_client = MongoClient(MONGO_STRING)
 
@@ -32,55 +32,88 @@ users_collection = deficit_table["Users"]
 
 def lambda_handler(event, context):
     request_body = event['body']
-
-    try:
-        table_logs = log_table.query(
-            KeyConditionExpression=Key('email').eq(request_body['email'])
-        )
-        logs = table_logs['Items']
-        log_data = logs[0]
-        log_list = log_data['logs']
-
-        #print('log list length:')
-        #print(len(log_list))
-        print(log_list)
-        
-        if(len(log_list) == 0):
-
-            log = {
-                'fat' : request_body['log']['fat'],
-                'carb' : request_body['log']['carb'],   
-                'protein' : request_body['log']['protein'],
-                'calories' : request_body['log']['calories'],
-                'date' : request_body['log']['date']
-            }
-
-            log_list.append(log)
-            #print(log_list)
-
-            log_table.update_item(
-                Key={
-                    'email' : request_body['email']
-                },
-                UpdateExpression= "SET #ts= :val1",
-                ExpressionAttributeValues={
-                    ':val1' : log_list
-                },
-                ExpressionAttributeNames={
-                    '#ts' : 'logs'
-                }
+    user = users_collection.find_one({'email' : request_body['email']})
+    if(user and (user['password'] == request_body['password'])):
+        try:
+            table_logs = log_table.query(
+                KeyConditionExpression=Key('email').eq(request_body['email'])
             )
-            print('Log updated.')
-        else:
-            for log in log_list:
-                #print(log)
-                if(log['date'] == request_body['log']['date']):
-                    print('adding to log')
+            logs = table_logs['Items']
+            log_data = logs[0]
+            log_list = log_data['logs']
 
-                    log['fat'] += request_body['log']['fat']
-                    log['carb'] += request_body['log']['carb']
-                    log['protein'] += request_body['log']['protein']
-                    log['calories'] += request_body['log']['calories']
+            #print('log list length:')
+            #print(len(log_list))
+            print(log_list)
+            print(type(log_list))
+
+            if(len(log_list) == 0):
+                print('len of log_list: 0')
+                log = {
+                    'fat' : request_body['log']['fat'],
+                    'carb' : request_body['log']['carb'],   
+                    'protein' : request_body['log']['protein'],
+                    'calories' : request_body['log']['calories'],
+                    'date' : request_body['log']['date']
+                }
+
+                log_list.append(log)
+                #print(log_list)
+
+                log_table.update_item(
+                    Key={
+                        'email' : request_body['email']
+                    },
+                    UpdateExpression= "SET #ts= :val1",
+                    ExpressionAttributeValues={
+                        ':val1' : log_list
+                    },
+                    ExpressionAttributeNames={
+                        '#ts' : 'logs'
+                    }
+                )
+                print('Log updated.')
+            else:
+                date_in_log_list = False
+                for log in log_list:
+                    if(log['date'] == request_body['log']['date']):
+                        date_in_log_list = True
+                if(date_in_log_list):
+                    for log in log_list:
+                        #print(log)
+
+                        if(log['date'] == request_body['log']['date']):
+                            print('adding to log')
+
+                            log['fat'] += request_body['log']['fat']
+                            log['carb'] += request_body['log']['carb']
+                            log['protein'] += request_body['log']['protein']
+                            log['calories'] += request_body['log']['calories']
+
+                            log_table.update_item(
+                                Key={
+                                    'email' : request_body['email']
+                                },
+                                UpdateExpression= "SET #ts= :val1",
+                                ExpressionAttributeValues={
+                                    ':val1' : log_list
+                                },
+                                ExpressionAttributeNames={
+                                    '#ts' : 'logs'
+                                }
+                            )
+                else:
+                    print('Creating new log')
+                    log = {
+                        'fat' : request_body['log']['fat'],
+                        'carb' : request_body['log']['carb'],   
+                        'protein' : request_body['log']['protein'],
+                        'calories' : request_body['log']['calories'],
+                        'date' : request_body['log']['date']
+                    }
+
+                    log_list.append(log)
+                    #print(log_list)
 
                     log_table.update_item(
                         Key={
@@ -94,34 +127,14 @@ def lambda_handler(event, context):
                             '#ts' : 'logs'
                         }
                     )
-
-            print('Creating new log')
-            log = {
-                'fat' : request_body['log']['fat'],
-                'carb' : request_body['log']['carb'],   
-                'protein' : request_body['log']['protein'],
-                'calories' : request_body['log']['calories'],
-                'date' : request_body['log']['date']
-            }
-
-            log_list.append(log)
-            #print(log_list)
-
-            log_table.update_item(
-                Key={
-                    'email' : request_body['email']
-                },
-                UpdateExpression= "SET #ts= :val1",
-                ExpressionAttributeValues={
-                    ':val1' : log_list
-                },
-                ExpressionAttributeNames={
-                    '#ts' : 'logs'
-                }
-            )
-            print('Log updated.')
-    except Exception as e:
-        print(e)
+                print('Log updated.')
+        except Exception as e:
+            print(e)
+    else:
+        print('User Not Found:::: Try Again')
+        return({
+            'body' : 'User Not Found:::: Try Again'
+        })
 
 # TODO add in password authentication once based logic works
 log = lambda_handler({

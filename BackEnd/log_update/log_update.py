@@ -21,7 +21,7 @@ dynamo_client = boto3.resource(
     aws_secret_access_key= AWS_SECRET_ACCESS_KEY,
 )
 
-log_table = dynamo_client.Table("Logs")
+log_table = dynamo_client.Table("Log")
 
 mongo_client = MongoClient(MONGO_STRING)
 

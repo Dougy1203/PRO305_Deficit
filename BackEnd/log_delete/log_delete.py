@@ -40,6 +40,7 @@ def lambda_handler(event, context):
         logs = table_logs['Items']
         if(logs):
             for log in logs:
+                print(log)
                 if(log['date'] == request_body['date']):
                     logs.remove(log)
                     log_table.update_item(

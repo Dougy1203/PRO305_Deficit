@@ -77,18 +77,10 @@ def lambda_handler(event, context):
                 if(log['date'] == request_body['log']['date']):
                     print('adding to log')
 
-                else:
-                    print('Creating new log')
-                    log = {
-                        'fat' : request_body['log']['fat'],
-                        'carb' : request_body['log']['carb'],   
-                        'protein' : request_body['log']['protein'],
-                        'calories' : request_body['log']['calories'],
-                        'date' : request_body['log']['date']
-                    }
-
-                    log_list.append(log)
-                    #print(log_list)
+                    log['fat'] += request_body['log']['fat']
+                    log['carb'] += request_body['log']['carb']
+                    log['protein'] += request_body['log']['protein']
+                    log['calories'] += request_body['log']['calories']
 
                     log_table.update_item(
                         Key={
@@ -102,7 +94,32 @@ def lambda_handler(event, context):
                             '#ts' : 'logs'
                         }
                     )
-                    print('Log updated.')
+
+            print('Creating new log')
+            log = {
+                'fat' : request_body['log']['fat'],
+                'carb' : request_body['log']['carb'],   
+                'protein' : request_body['log']['protein'],
+                'calories' : request_body['log']['calories'],
+                'date' : request_body['log']['date']
+            }
+
+            log_list.append(log)
+            #print(log_list)
+
+            log_table.update_item(
+                Key={
+                    'email' : request_body['email']
+                },
+                UpdateExpression= "SET #ts= :val1",
+                ExpressionAttributeValues={
+                    ':val1' : log_list
+                },
+                ExpressionAttributeNames={
+                    '#ts' : 'logs'
+                }
+            )
+            print('Log updated.')
     except Exception as e:
         print(e)
 

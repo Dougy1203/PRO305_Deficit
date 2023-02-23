@@ -32,18 +32,37 @@ users_collection = deficit_table["Users"]
 
 def lambda_handler(event, context):
     request_body = event['body']
-    try:
-        print('my bed... right now')
-        print(request_body)
-    except Exception as e:
-        print(e)
+
+    user = users_collection.find_one({'email' : request_body['email']})
+
+    if(user is None):
+        try:
+            new_user = {
+                'email' : request_body['email'],
+                'firstName' : request_body['firstName'],
+                'lastName' : request_body['lastName'],
+                'password' : request_body['password'],
+                'goal' : json.dumps(request_body['goal'])
+            }
+
+            users_collection.insert_one(new_user)
+        except Exception as e:
+            print(e)
+    else:
+        return {
+            'body' : 'User already exists with that email.'
+        }
 
 performer = lambda_handler({
     'body' : {
-        'email' : '',
-        'password' : '',
-        'log' : [],
+        'email' : 'rbrunney@gmail.com',
+        'firstName' : 'Robert',
+        'lastName' : 'Brunney',
+        'password' : 'root',
+        'goal' : {},
     }
     },
     None
     )
+
+print(performer)

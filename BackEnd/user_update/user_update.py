@@ -32,18 +32,41 @@ users_collection = deficit_table["Users"]
 
 def lambda_handler(event, context):
     request_body = event['body']
-    try:
-        print('my bed... right now')
-        print(request_body)
-    except Exception as e:
-        print(e)
 
-performer = lambda_handler({
+    user = users_collection.find_one({'email' : request_body['email']})
+
+    if(user and (user['password'] == request_body['password'])):
+        try:
+            updated_user = {
+                'email' : request_body['email'],
+                'firstName' : request_body['firstName'],
+                'lastName' : request_body['lastName'],
+                'password' : request_body['password'],
+                'goal' : json.dumps(request_body['goal'])
+            }
+
+            users_collection.update_one({'email': request_body['email']}, {"$set" : updated_user}, upsert=False)
+
+            return {
+                'body' : 'User updated.'
+            }
+        except Exception as e:
+            print(e)
+    else:
+        return {
+            'body' : 'Validation failed try again.'
+        }
+
+user = lambda_handler({
     'body' : {
-        'email' : '',
-        'password' : '',
-        'log' : [],
+        'email' : 'rbrunney@gmail.com',
+        'firstName' : 'Rob',
+        'lastName' : 'Brunney',
+        'password' : 'root',
+        'goal' : {},
     }
     },
     None
     )
+
+print(user)

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/bottom_button.dart';
-import '../widgets/calculator_brain.dart';
+import '../classes/calculator_brain.dart';
 import '../widgets/card_child_icon.dart';
 import '../widgets/constants.dart';
 import '../main.dart';

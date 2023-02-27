@@ -27,11 +27,11 @@ class InputPageState extends State<InputPage> {
         appBar: AppBar(
           title: const Text('BMI CALCULATOR'),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Expanded(
-              child: Row(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Row(
                 children: <Widget>[
                   Expanded(
                     child: ReusableCard(
@@ -67,9 +67,7 @@ class InputPageState extends State<InputPage> {
                   ),
                 ],
               ),
-            ),
-            Expanded(
-              child: ReusableCard(
+              ReusableCard(
                 color: kActiveCardColor,
                 cardChild: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -115,9 +113,7 @@ class InputPageState extends State<InputPage> {
                   ],
                 ), onPress: () {  },
               ),
-            ),
-            Expanded(
-              child: Row(
+              Row(
                 children: <Widget>[
                   Expanded(
                     child: ReusableCard(
@@ -198,16 +194,16 @@ class InputPageState extends State<InputPage> {
                   ),
                 ],
               ),
-            ),
-            BottomButton(
-              onTap: () {
-                CalculatorBrain brain = CalculatorBrain(height, weight);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ResultsPage(bmiResults: brain.calculateBmi(), bmiText: brain.getResult(), bmiInterpretation: brain.getInterp(),)));
-              },
-              buttonTitle: 'CALCULATE BMI',
-            ),
-          ],
+              BottomButton(
+                onTap: () {
+                  CalculatorBrain brain = CalculatorBrain(height, weight);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ResultsPage(bmiResults: brain.calculateBmi(), bmiText: brain.getResult(), bmiInterpretation: brain.getInterp(),)));
+                },
+                buttonTitle: 'CALCULATE BMI',
+              ),
+            ],
+          ),
         ));
   }
 }

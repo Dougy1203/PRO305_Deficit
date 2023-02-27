@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
 
 const kBottomContainerHeight = 80.0;
 const kBmiPrimary = Color(0xFF0A0E21);

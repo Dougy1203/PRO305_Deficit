@@ -11,19 +11,21 @@ class CalculatorBrain{
     return _bmi.toStringAsFixed(1);
   }
   String getResult(){
-    if(_bmi >= 25)
+    if(_bmi >= 25) {
       return "Overweight";
-    else if(_bmi > 18.5)
+    } else if(_bmi > 18.5) {
       return "Normal";
-    else
+    } else {
       return "Underweight";
+    }
   }
   String getInterp(){
-    if(_bmi >= 25)
+    if(_bmi >= 25) {
       return "Lose Weight. Fatty";
-    else if(_bmi > 18.5)
+    } else if(_bmi > 18.5) {
       return "You Good";
-    else
+    } else {
       return "Eat some food you underweight piece of human garbage";
+    }
   }
 }

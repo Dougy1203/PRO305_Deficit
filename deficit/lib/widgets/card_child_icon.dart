@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'constants.dart';
 
-class cardChildIcon extends StatelessWidget {
-  cardChildIcon({required this.icon, required this.text});
+class CardChildIcon extends StatelessWidget {
+  const CardChildIcon({super.key, required this.icon, required this.text});
   final IconData icon;
   final String text;
   @override
@@ -15,7 +15,7 @@ class cardChildIcon extends StatelessWidget {
           icon,
           size: 80,
         ),
-        SizedBox(
+        const SizedBox(
           height: 15,
         ),
         Text(

@@ -4,9 +4,9 @@ from boto3.dynamodb.conditions import Key
 import os
 from os import getenv
 from uuid import uuid4
-import pymongo
 from pymongo import MongoClient
 from dotenv import load_dotenv
+import rsa
 
 load_dotenv()
 

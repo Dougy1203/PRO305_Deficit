@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/bottom_button.dart';
@@ -8,6 +9,7 @@ import '../main.dart';
 import 'results_page.dart';
 import '../widgets/reusable_card.dart';
 import '../widgets/round_icon_button.dart';
+import '../classes/rsa_encryption.dart' as rsa;
 
 class InputPage extends StatefulWidget {
   const InputPage({super.key});
@@ -42,7 +44,15 @@ class InputPageState extends State<InputPage> {
                         icon: Icons.male,
                         text: 'MALE',
                       ),
-                      onPress: () {
+                      onPress: () async {
+                        if (kDebugMode) {
+                          String msg = 'this is my test';
+                          print(msg);
+                          String cipher = await rsa.encrypt(msg);
+                          print(cipher);
+                          String decrypted = await rsa.decrypt(cipher);
+                          print(decrypted);
+                        }
                         setState(() {
                           gender = Gender.male;
                         });

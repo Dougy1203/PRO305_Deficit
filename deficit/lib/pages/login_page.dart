@@ -52,24 +52,27 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   MaterialButton(
-                    child: Wrap(children: [
-                      Container(
-                        width: 90.0,
-                        height: 30.0,
-                        color: kPrimaryColor,
-                        child: const Center(child: Text('Sign In')),
-                      ),
-                    ]),
-                    onPressed: () async {
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => const InputPage(),
-                      ),);
-                      var map = <String, dynamic>{};
-                      map['userName'] = userController.text;
-                      map['userPassword'] = passController.text;
-                    }
-                  ),
+                      child: Wrap(children: [
+                        Container(
+                          width: 90.0,
+                          height: 30.0,
+                          color: kPrimaryColor,
+                          child: const Center(child: Text('Sign In')),
+                        ),
+                      ]),
+                      onPressed: () async {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const InputPage(),
+                          ),
+                        );
+                        var map = <String, dynamic>{};
+                        map['userName'] = userController.text;
+                        map['userPassword'] = passController.text;
+                      }),
                   MaterialButton(
+
                     child: Wrap(children: [
                       Container(
                         width: 90.0,

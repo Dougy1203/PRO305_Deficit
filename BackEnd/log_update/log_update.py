@@ -27,8 +27,15 @@ mongo_client = MongoClient(MONGO_STRING)
 
 deficit_table = mongo_client["Deficit"]
 users_collection = deficit_table["Users"]
-# x = users_collection.insert_one({"user_name":"Soumi"})
-# print(x.inserted_id)
+
+def response(status_code, body):
+    return {
+        "statusCode" : status_code,
+        "headers" : {
+            "Content-Type" : 'application/json'
+        },
+        "body" : json.dumps(body),
+    }
 
 def lambda_handler(event, context):
     request_body = event['body']
@@ -42,13 +49,7 @@ def lambda_handler(event, context):
             log_data = logs[0]
             log_list = log_data['logs']
 
-            #print('log list length:')
-            #print(len(log_list))
-            print(log_list)
-            print(type(log_list))
-
             if(len(log_list) == 0):
-                print('len of log_list: 0')
                 log = {
                     'fat' : request_body['log']['fat'],
                     'carb' : request_body['log']['carb'],   
@@ -58,7 +59,6 @@ def lambda_handler(event, context):
                 }
 
                 log_list.append(log)
-                #print(log_list)
 
                 log_table.update_item(
                     Key={
@@ -72,7 +72,7 @@ def lambda_handler(event, context):
                         '#ts' : 'logs'
                     }
                 )
-                print('Log updated.')
+                response(200, 'Log Updated')
             else:
                 date_in_log_list = False
                 for log in log_list:
@@ -80,11 +80,7 @@ def lambda_handler(event, context):
                         date_in_log_list = True
                 if(date_in_log_list):
                     for log in log_list:
-                        #print(log)
-
                         if(log['date'] == request_body['log']['date']):
-                            print('adding to log')
-
                             log['fat'] += request_body['log']['fat']
                             log['carb'] += request_body['log']['carb']
                             log['protein'] += request_body['log']['protein']
@@ -102,8 +98,8 @@ def lambda_handler(event, context):
                                     '#ts' : 'logs'
                                 }
                             )
+                            response(200, 'Log Updated')
                 else:
-                    print('Creating new log')
                     log = {
                         'fat' : request_body['log']['fat'],
                         'carb' : request_body['log']['carb'],   
@@ -113,7 +109,6 @@ def lambda_handler(event, context):
                     }
 
                     log_list.append(log)
-                    #print(log_list)
 
                     log_table.update_item(
                         Key={
@@ -127,29 +122,26 @@ def lambda_handler(event, context):
                             '#ts' : 'logs'
                         }
                     )
-                print('Log updated.')
+                response(200, 'Log Updated')
         except Exception as e:
             print(e)
+            response(500, '[ERROR] Internal Server Error')
     else:
-        print('User Not Found:::: Try Again')
-        return({
-            'body' : 'User Not Found:::: Try Again'
-        })
+        response(401, 'User Not Found')
 
-# TODO add in password authentication once based logic works
-log = lambda_handler({
-    'body' : {
-        'email' : 'cstanley@gmail.com',
-        'password' : 'root',
-        'log' : 
-            {
-            'fat' : 20,
-            'carb': 15,
-            'protein' : 20,
-            'calories' : 300,
-            'date' : '2/20/2023'
-            },
-    }
-    },
-    None
-    )
+# log = lambda_handler({
+#     'body' : {
+#         'email' : 'cstanley@gmail.com',
+#         'password' : 'root',
+#         'log' : 
+#             {
+#             'fat' : 20,
+#             'carb': 15,
+#             'protein' : 20,
+#             'calories' : 300,
+#             'date' : '2/20/2023'
+#             },
+#         }
+#     },
+#     None
+# )

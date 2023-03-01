@@ -6,22 +6,10 @@ from os import getenv
 from uuid import uuid4
 from pymongo import MongoClient
 from dotenv import load_dotenv
-import rsa
 
 load_dotenv()
 
 MONGO_STRING = os.getenv('MONGO_CONNECTION_STRING')
-AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-
-dynamo_client = boto3.resource(
-    service_name="dynamodb",
-    region_name="us-east-1",
-    aws_access_key_id= AWS_ACCESS_KEY,
-    aws_secret_access_key= AWS_SECRET_ACCESS_KEY,
-)
-
-log_table = dynamo_client.Table("Logs")
 
 mongo_client = MongoClient(MONGO_STRING)
 
@@ -39,21 +27,17 @@ def response(status_code, body):
 
 def lambda_handler(event, context):
     request_body = event['body']
+
     user = users_collection.find_one({'email' : request_body['email']})
-    if(user and (user['password'] == request_body['password'])):
-        try:
-            users_collection.delete_one(user)
-            response(200, f'User Deleted with Email: {request_body["email"]}')
-        except Exception as e:
-            print(e)
-            response(500, '[Error] Internal Server Error')
+    if user['password'] == request_body['password']:
+        response(200, 'Logged In')
     else:
-        response(401, '[Error] User Validation Error')
+        response(401, 'Log In Failed')
 
 # lambda_handler({
 #     'body' : {
-#         'email' : 'cstanley@gmail.com',
-#         'password' : 'root'
+#         'email' : 'liamd1203@gmail.com',
+#         'password' : 'root',
 #         }
 #     },
 #     None

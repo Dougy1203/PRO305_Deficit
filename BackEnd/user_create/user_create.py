@@ -27,14 +27,20 @@ mongo_client = MongoClient(MONGO_STRING)
 
 deficit_table = mongo_client["Deficit"]
 users_collection = deficit_table["Users"]
-# x = users_collection.insert_one({"user_name":"Soumi"})
-# print(x.inserted_id)
+
+def response(status_code, body):
+    return {
+        "statusCode" : status_code,
+        "headers" : {
+            "Content-Type" : 'application/json'
+        },
+        "body" : json.dumps(body),
+    }
 
 def lambda_handler(event, context):
     request_body = event['body']
 
     user = users_collection.find_one({'email' : request_body['email']})
-
     if(user is None):
         try:
             new_user = {
@@ -46,23 +52,21 @@ def lambda_handler(event, context):
             }
 
             users_collection.insert_one(new_user)
+            response(200, 'User Created')
         except Exception as e:
             print(e)
+            response(500, '[ERROR] Internal Server Error')
     else:
-        return {
-            'body' : 'User already exists with that email.'
-        }
+        response(401, f'User Already Exists with Email: {request_body["email"]}')
 
-performer = lambda_handler({
-    'body' : {
-        'email' : 'rbrunney@gmail.com',
-        'firstName' : 'Robert',
-        'lastName' : 'Brunney',
-        'password' : 'root',
-        'goal' : {},
-    }
-    },
-    None
-    )
-
-print(performer)
+# lambda_handler({
+#     'body' : {
+#         'email' : 'rbrunney@gmail.com',
+#         'firstName' : 'Robert',
+#         'lastName' : 'Brunney',
+#         'password' : 'root',
+#         'goal' : {},
+#         }
+#     },
+#     None
+# )

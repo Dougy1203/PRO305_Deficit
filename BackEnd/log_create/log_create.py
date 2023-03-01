@@ -30,39 +30,36 @@ users_collection = deficit_table["Users"]
 # x = users_collection.insert_one({"user_name":"Soumi"})
 # print(x.inserted_id)
 
+def response(status_code, body):
+    return {
+        "statusCode" : status_code,
+        "headers" : {
+            "Content-Type" : 'application/json'
+        },
+        "body" : json.dumps(body),
+    }
+
 def lambda_handler(event, context):
     request_body = event['body']
-
-    try:
-        table_logs = log_table.query(
-            KeyConditionExpression=Key('email').eq(request_body['email'])
-        )
-        logs = table_logs["Items"]
-        if(logs):
-            print(f'There is already a Log for the Email: {request_body["email"]}')
-            return{
-                'body' : f'There is already a Log for the Email: {request_body["email"]}'
-            }
-        else:
-            log_table.put_item(
-                Item={
-                    'email' : request_body['email'],
-                    'logs' : request_body['logs']
-                },
+    user = users_collection.find_one({'email' : request_body['email']})
+    if user['password'] == request_body['password']:
+        try:
+            table_logs = log_table.query(
+                KeyConditionExpression=Key('email').eq(request_body['email'])
             )
-            print(f'Log Created with Email: {request_body["email"]}')
-            
-    except Exception as e:
-        print(e)
-        
-
-# TODO add in password authentication.
-log = lambda_handler({
-    'body' : {
-        'email' : 'cstanley@gmail.com',
-        'password' : 'root',
-        'logs' : [],
-    }
-    },
-    None
-    )
+            logs = table_logs["Items"]
+            if(logs):
+                response(401, f'There is already a Log for the Email: {request_body["email"]}')
+            else:
+                log_table.put_item(
+                    Item={
+                        'email' : request_body['email'],
+                        'logs' : request_body['logs']
+                    },
+                )
+                response(200, f'Log Created with Email: {request_body["email"]}')
+        except Exception as e:
+            print(e)
+            response(500, '[ERROR] Internal Server Error')
+    else:
+        response(401, '[ERROR] Invalid User')

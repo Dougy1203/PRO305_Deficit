@@ -1,5 +1,5 @@
 FROM public.ecr.aws/lambda/python:3.9
-COPY log_update.py ${LAMBDA_TASK_ROOT}
+COPY user_login.py ${LAMBDA_TASK_ROOT}
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
-CMD [ "log_update.lambda_handler" ]
+CMD [ "user_login.lambda_handler" ]

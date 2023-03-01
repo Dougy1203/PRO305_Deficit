@@ -1,5 +1,11 @@
 version: "3.9"
 services:
+  email:
+    build: ./email_service
+    image: email_service:1.0
+  init:
+    build: ./init
+    image: init:1.0
   log_create:
     build: ./log_create
     image: log_create:1.0

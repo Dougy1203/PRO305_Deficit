@@ -27,23 +27,40 @@ mongo_client = MongoClient(MONGO_STRING)
 
 deficit_table = mongo_client["Deficit"]
 users_collection = deficit_table["Users"]
-# x = users_collection.insert_one({"user_name":"Soumi"})
-# print(x.inserted_id)
+
+def response(status_code, body):
+    return {
+        "statusCode" : status_code,
+        "headers" : {
+            "Content-Type" : 'application/json'
+        },
+        "body" : json.dumps(body),
+    }
 
 def lambda_handler(event, context):
     request_body = event['body']
-    try:
-        print('my bed... right now')
-        print(request_body)
-    except Exception as e:
-        print(e)
+    user = users_collection.find_one({'email' : request_body['email']})
+    if user['password'] == request_body['password']:
+        try:
+            table_logs = log_table.query(
+                KeyConditionExpression=Key('email').eq(request_body['email'])
+            )
+            logs = table_logs['Items']
+            log_data = logs[0]
+            log_list = log_data['logs']
+            response(200, log_list)
+        except Exception as e:
+            print(e)
+            response(500, '[ERROR] Internal Server Error')
+    else:
+        response(401, 'Login In Attempt Failed')
 
-performer = lambda_handler({
-    'body' : {
-        'email' : '',
-        'password' : '',
-        'log' : [],
-    }
-    },
-    None
-    )
+# lambda_handler({
+#     'body' : {
+#         'email' : '',
+#         'password' : '',
+#         'log' : [],
+#         }
+#     },
+#     None
+# )

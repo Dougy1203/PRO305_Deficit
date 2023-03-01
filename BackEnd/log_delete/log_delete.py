@@ -27,8 +27,15 @@ mongo_client = MongoClient(MONGO_STRING)
 
 deficit_table = mongo_client["Deficit"]
 users_collection = deficit_table["Users"]
-# x = users_collection.insert_one({"user_name":"Soumi"})
-# print(x.inserted_id)
+
+def response(status_code, body):
+    return {
+        "statusCode" : status_code,
+        "headers" : {
+            "Content-Type" : 'application/json'
+        },
+        "body" : json.dumps(body),
+    }
 
 def lambda_handler(event, context):
     request_body = event['body']
@@ -61,29 +68,23 @@ def lambda_handler(event, context):
                             }
                         )
                         print(f'Log Deleted With Date: {request_body["date"]}')
-                        return{
-                            'body' : f'Log Deleted With Date: {request_body["date"]}'
-                        }
+                        response(200, f'Log Deleted With Date: {request_body["date"]}')
                     else:
-                        return{
-                            'body' : 'Date Not Found:::: Try Again'
-                        }
+                        response(401, 'Date Not Found:::: Try Again')
             else:
-                print(f'Log Not Found with Email: {request_body["email"]}')   
+                response(401, f'Log Not Found with Email: {request_body["email"]}')  
         except Exception as e:
             print(e)
+            response(500, '[ERROR] Internal Server Error')
     else:
-        print('User Not Found:::: Try Again')
-        return({
-            'body' : 'User Not Found:::: Try Again'
-        })
+        response(401, 'User Not Found:::: Try Again')
 
-performer = lambda_handler({
-    'body' : {
-        'email' : 'cstanley@gmail.com',
-        'password' : 'root',
-        'date' : '2/20/2023',
-        }
-    },
-    None
-    )
+# lambda_handler({
+#     'body' : {
+#         'email' : 'cstanley@gmail.com',
+#         'password' : 'root',
+#         'date' : '2/20/2023',
+#         }
+#     },
+#     None
+# )

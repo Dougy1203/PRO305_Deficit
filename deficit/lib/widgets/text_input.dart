@@ -24,12 +24,12 @@ class _MyTextFieldState extends State<MyTextField> {
           obscureText: widget.isObscured,
           obscuringCharacter: '*',
           style: const TextStyle(
-            color: kSecondaryColor,
+            color: kSuggestiveText,
           ),
           decoration: InputDecoration(
             labelText: widget.text,
             labelStyle: const TextStyle(
-              color: kSecondaryColor,
+              color: kSuggestiveText,
             ),
             filled: true,
             fillColor: kPrimaryColor,
@@ -68,12 +68,12 @@ class _MyTextFieldState extends State<MyTextField> {
         child: TextField(
           controller: widget.myController,
           style: const TextStyle(
-            color: kSecondaryColor,
+            color: kSuggestiveText,
           ),
           decoration: InputDecoration(
             labelText: widget.text,
             labelStyle: const TextStyle(
-              color: kSecondaryColor,
+              color: kSuggestiveText,
             ),
             filled: true,
             fillColor: kPrimaryColor,

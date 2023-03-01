@@ -4,9 +4,11 @@ const kBottomContainerHeight = 80.0;
 const kBmiPrimary = Color(0xFF0A0E21);
 const kActiveCardColor = Color(0xFF1D1E33);
 const kInactiveCardColor = Color(0xFF111328);
-const kBmiTertiary = Color(0xFFEB1555);
-const kSecondaryColor = Colors.white;
-final kPrimaryColor = Colors.green.shade900;
+const kBackgroundColor = Color(0xFFD6D6B1);
+const kPrimaryColor = Color(0xFF03440C);
+const kSecondaryColor = Color(0xFF0A2342);
+const kTertiaryColor = Color(0xFF96BE8C);
+const kSuggestiveText = Colors.white;
 const kCardTextStyle = TextStyle(
   fontSize: 50.0,
   fontWeight: FontWeight.w900,

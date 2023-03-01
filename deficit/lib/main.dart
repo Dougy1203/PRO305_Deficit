@@ -1,4 +1,5 @@
 import 'package:deficit/pages/input_page.dart';
+import 'package:deficit/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'widgets/constants.dart';
 
@@ -20,7 +21,7 @@ class BMICalculator extends StatelessWidget {
         ),
         scaffoldBackgroundColor: kBmiPrimary,
       ),
-      home: const InputPage(),
+      home: const LoginPage(),
     );
   }
 }

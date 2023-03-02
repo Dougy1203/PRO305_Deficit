@@ -14,14 +14,15 @@ import '../widgets/round_icon_button.dart';
 import '../classes/rsa_encryption.dart' as rsa;
 
 class InputPage extends StatefulWidget {
-  const InputPage({super.key});
+  InputPage({super.key, required this.email, required this.pass});
+  String email;
+  String pass;
 
   @override
   InputPageState createState() => InputPageState();
 }
 
 class InputPageState extends State<InputPage> {
-  Gender gender = Gender.male;
   int calories = 200;
   int protein = 20;
   int carbs = 20;
@@ -30,7 +31,7 @@ class InputPageState extends State<InputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('BMI CALCULATOR'),
+          title: const Text('MACRO COUNTER'),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -222,21 +223,28 @@ class InputPageState extends State<InputPage> {
               ),
               BottomButton(
                 onTap: () async {
-                  Map<String,dynamic> map = {};
-                  map['calories'] = calories;
-                  map['carb'] = carbs;
-                  map['protein'] = protein;
-                  map['fat'] = fat;
-                  var request = <String,dynamic> {};
-                  request['body'] = map;
+                  Map<String,dynamic> log = {};
+                  log['calories'] = calories;
+                  log['carb'] = carbs;
+                  log['protein'] = protein;
+                  log['fat'] = fat;
 
-                  var response = put(kDomain, 'log', json.encode(request));
-                  // print(response.body)
-                  CalculatorBrain brain = CalculatorBrain(0,0);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ResultsPage(bmiResults: brain.calculateBmi(), bmiText: brain.getResult(), bmiInterpretation: brain.getInterp(),)));
+                  Map<String,dynamic> requestBody = {};
+                  requestBody['email'] = widget.email;
+                  requestBody['password'] = widget.pass;
+                  requestBody['log'] = log;
+
+                  var request = <String,dynamic> {};
+                  request['body'] = requestBody;
+                  print(json.encode(request));
+                  var response = await put(kDomain, 'log', json.encode(request));
+                  print(response['statusCode']);
+                  print(response['body']);
+                  // CalculatorBrain brain = CalculatorBrain(0,0);
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => ResultsPage(bmiResults: brain.calculateBmi(), bmiText: brain.getResult(), bmiInterpretation: brain.getInterp(),)));
                 },
-                buttonTitle: 'Enter Log',
+                buttonTitle: 'Add Log',
               ),
             ],
           ),

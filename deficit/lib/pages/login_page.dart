@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               const MainImage('assets/logo_complete.png', 15.0, 200.0, 200.0),
               MyTextField(
-                text: 'UserName',
+                text: 'Email',
                 icon: Icons.person,
                 obscured: false,
                 myController: userController,
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const InputPage(),
+                              builder: (context) => InputPage(email: userController.text, pass: passController.text),
                             ),
                           );
                         }

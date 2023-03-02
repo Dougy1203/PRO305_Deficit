@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../classes/http.dart';
 import '../widgets/bottom_button.dart';
 import '../classes/calculator_brain.dart';
 import '../widgets/card_child_icon.dart';
@@ -19,9 +22,10 @@ class InputPage extends StatefulWidget {
 
 class InputPageState extends State<InputPage> {
   Gender gender = Gender.male;
-  int weight = 150;
-  int height = 72;
-  int age = 25;
+  int calories = 200;
+  int protein = 20;
+  int carbs = 20;
+  int fat = 20;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,67 +36,23 @@ class InputPageState extends State<InputPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: ReusableCard(
-                      color: gender == Gender.male
-                          ? kActiveCardColor
-                          : kInactiveCardColor,
-                      cardChild: const CardChildIcon(
-                        icon: Icons.male,
-                        text: 'MALE',
-                      ),
-                      onPress: () async {
-                        if (kDebugMode) {
-                          String msg = 'this is my test';
-                          print(msg);
-                          String cipher = await rsa.encrypt(msg);
-                          print(cipher);
-                          String decrypted = await rsa.decrypt(cipher);
-                          print(decrypted);
-                        }
-                        setState(() {
-                          gender = Gender.male;
-                        });
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: ReusableCard(
-                      color: gender == Gender.female
-                          ? kActiveCardColor
-                          : kInactiveCardColor,
-                      cardChild: const CardChildIcon(
-                        icon: Icons.female,
-                        text: 'FEMALE',
-                      ),
-                      onPress: () {
-                        setState(() {
-                          gender = Gender.female;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
               ReusableCard(
                 color: kActiveCardColor,
                 cardChild: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('HEIGHT', style: kLabelTextStyle),
+                    const Text('PROTEIN', style: kLabelTextStyle),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
                         Text(
-                          height.toString(),
+                          protein.toString(),
                           style: kCardTextStyle,
                         ),
                         const Text(
-                          'in',
+                          'g',
                           style: kLabelTextStyle,
                         ),
                       ],
@@ -108,108 +68,175 @@ class InputPageState extends State<InputPage> {
                         overlayColor: const Color(0x29EB1555),
                       ),
                       child: Slider(
-                        value: height.toDouble(),
+                        value: protein.toDouble(),
                         inactiveColor: const Color(0xFF8D8E98),
                         onChanged: (double newValue) {
                           setState(() {
-                            height = newValue.round();
+                            protein = newValue.round();
                           });
                         },
-                        min: 36.0,
-                        max: 96,
+                        min: 0.0,
+                        max: 120,
                       ),
                     ),
                   ],
                 ), onPress: () {  },
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: ReusableCard(
-                      color: kActiveCardColor,
-                      cardChild: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Text(
-                            'WEIGHT',
-                            style: kLabelTextStyle,
-                          ),
-                          Text(
-                            weight.toString(),
-                            style: kCardTextStyle,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              RoundIconButton(
-                                icon: Icons.arrow_drop_down,
-                                onPressed: () {
-                                  setState(() {
-                                    weight--;
-                                  });
-                                },
-                              ),
-                              RoundIconButton(
-                                  icon: Icons.arrow_drop_up,
-                                  onPressed: () {
-                                    setState(() {
-                                      weight++;
-                                    });
-                                  }),
-                            ],
-                          ),
-                        ],
-                      ), onPress: () {  },
+              ReusableCard(
+                color: kActiveCardColor,
+                cardChild: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('CARBS', style: kLabelTextStyle),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          carbs.toString(),
+                          style: kCardTextStyle,
+                        ),
+                        const Text(
+                          'g',
+                          style: kLabelTextStyle,
+                        ),
+                      ],
                     ),
-                  ),
-                  Expanded(
-                    child: ReusableCard(
-                      color: kActiveCardColor,
-                      cardChild: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Text(
-                            'AGE',
-                            style: kLabelTextStyle,
-                          ),
-                          Text(
-                            age.toString(),
-                            style: kCardTextStyle,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              RoundIconButton(
-                                icon: Icons.arrow_drop_down,
-                                onPressed: () {
-                                  setState(() {
-                                    age--;
-                                  });
-                                },
-                              ),
-                              RoundIconButton(
-                                icon: Icons.arrow_drop_up,
-                                onPressed: () {
-                                  setState(() {
-                                    age++;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ), onPress: () {  },
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        thumbShape:
+                        const RoundSliderThumbShape(enabledThumbRadius: 15.0),
+                        overlayShape:
+                        const RoundSliderOverlayShape(overlayRadius: 25.0),
+                        activeTrackColor: Colors.white,
+                        thumbColor: kTertiaryColor,
+                        overlayColor: const Color(0x29EB1555),
+                      ),
+                      child: Slider(
+                        value: carbs.toDouble(),
+                        inactiveColor: const Color(0xFF8D8E98),
+                        onChanged: (double newValue) {
+                          setState(() {
+                            carbs = newValue.round();
+                          });
+                        },
+                        min: 0.0,
+                        max: 120,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ), onPress: () {  },
+              ),
+              ReusableCard(
+                color: kActiveCardColor,
+                cardChild: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('FAT', style: kLabelTextStyle),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          fat.toString(),
+                          style: kCardTextStyle,
+                        ),
+                        const Text(
+                          'g',
+                          style: kLabelTextStyle,
+                        ),
+                      ],
+                    ),
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        thumbShape:
+                        const RoundSliderThumbShape(enabledThumbRadius: 15.0),
+                        overlayShape:
+                        const RoundSliderOverlayShape(overlayRadius: 25.0),
+                        activeTrackColor: Colors.white,
+                        thumbColor: kTertiaryColor,
+                        overlayColor: const Color(0x29EB1555),
+                      ),
+                      child: Slider(
+                        value: fat.toDouble(),
+                        inactiveColor: const Color(0xFF8D8E98),
+                        onChanged: (double newValue) {
+                          setState(() {
+                            fat = newValue.round();
+                          });
+                        },
+                        min: 0.0,
+                        max: 120,
+                      ),
+                    ),
+                  ],
+                ), onPress: () {  },
+              ),
+              ReusableCard(
+                color: kActiveCardColor,
+                cardChild: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('CALORIES', style: kLabelTextStyle),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          calories.toString(),
+                          style: kCardTextStyle,
+                        ),
+                        const Text(
+                          '',
+                          style: kLabelTextStyle,
+                        ),
+                      ],
+                    ),
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        thumbShape:
+                        const RoundSliderThumbShape(enabledThumbRadius: 15.0),
+                        overlayShape:
+                        const RoundSliderOverlayShape(overlayRadius: 25.0),
+                        activeTrackColor: Colors.white,
+                        thumbColor: kTertiaryColor,
+                        overlayColor: const Color(0x29EB1555),
+                      ),
+                      child: Slider(
+                        value: calories.toDouble(),
+                        inactiveColor: const Color(0xFF8D8E98),
+                        onChanged: (double newValue) {
+                          setState(() {
+                            calories = newValue.round();
+                          });
+                        },
+                        min: 0.0,
+                        max: 2000,
+                      ),
+                    ),
+                  ],
+                ), onPress: () {  },
               ),
               BottomButton(
-                onTap: () {
-                  CalculatorBrain brain = CalculatorBrain(height, weight);
+                onTap: () async {
+                  Map<String,dynamic> map = {};
+                  map['calories'] = calories;
+                  map['carb'] = carbs;
+                  map['protein'] = protein;
+                  map['fat'] = fat;
+                  var request = <String,dynamic> {};
+                  request['body'] = map;
+
+                  var response = put(kDomain, 'log', json.encode(request));
+                  // print(response.body)
+                  CalculatorBrain brain = CalculatorBrain(0,0);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => ResultsPage(bmiResults: brain.calculateBmi(), bmiText: brain.getResult(), bmiInterpretation: brain.getInterp(),)));
                 },
-                buttonTitle: 'CALCULATE BMI',
+                buttonTitle: 'Enter Log',
               ),
             ],
           ),

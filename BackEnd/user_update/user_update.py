@@ -34,7 +34,7 @@ def response(status_code, body):
         "headers" : {
             "Content-Type" : 'application/json'
         },
-        "body" : json.dumps(body),
+        "body" : json.dumps({'message' : body}),
     }
 
 def lambda_handler(event, context):
@@ -51,12 +51,12 @@ def lambda_handler(event, context):
                 'goal' : json.dumps(request_body['goal'])
             }
             users_collection.update_one({'email': request_body['email']}, {"$set" : updated_user}, upsert=False)
-            response(200, f'User Updated with Email: {request_body["email"]}')
+            return response(200, f'User Updated with Email: {request_body["email"]}')
         except Exception as e:
             print(e)
-            response(500, '[Error] Internal Server Error')
+            return response(500, '[Error] Internal Server Error')
     else:
-        response(401, '[Error] User Validation Error')
+        return response(401, '[Error] User Validation Error')
 
 # lambda_handler({
 #     'body' : {

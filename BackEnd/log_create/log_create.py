@@ -27,8 +27,6 @@ mongo_client = MongoClient(MS)
 
 deficit_table = mongo_client["Deficit"]
 users_collection = deficit_table["Users"]
-# x = users_collection.insert_one({"user_name":"Soumi"})
-# print(x.inserted_id)
 
 def response(status_code, body):
     return {
@@ -36,7 +34,7 @@ def response(status_code, body):
         "headers" : {
             "Content-Type" : 'application/json'
         },
-        "body" : json.dumps(body),
+        "body" : json.dumps({'message' : body}),
     }
 
 def lambda_handler(event, context):
@@ -49,7 +47,7 @@ def lambda_handler(event, context):
             )
             logs = table_logs["Items"]
             if(logs):
-                response(401, f'There is already a Log for the Email: {request_body["email"]}')
+                return response(401, f'There is already a Log for the Email: {request_body["email"]}')
             else:
                 log_table.put_item(
                     Item={
@@ -57,9 +55,9 @@ def lambda_handler(event, context):
                         'logs' : request_body['logs']
                     },
                 )
-                response(200, f'Log Created with Email: {request_body["email"]}')
+                return response(200, f'Log Created with Email: {request_body["email"]}')
         except Exception as e:
             print(e)
-            response(500, '[ERROR] Internal Server Error')
+            return response(500, '[ERROR] Internal Server Error')
     else:
-        response(401, '[ERROR] Invalid User')
+        return response(401, '[ERROR] Invalid User')

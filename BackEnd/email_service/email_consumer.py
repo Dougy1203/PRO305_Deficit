@@ -48,12 +48,13 @@ def lambda_handler(event, context):
                     server.sendmail(SE, email, content)
                     message.delete()
     except Exception as e:
+        print('exception')
         print(e)
     finally:
         server.quit()
 
-# lambda_handler({
-#     'body' : {}
-#     },
-#     None
-#     )
+lambda_handler({
+    'body' : {}
+    },
+    None
+    )

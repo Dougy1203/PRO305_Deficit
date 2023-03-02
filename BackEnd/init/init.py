@@ -31,8 +31,7 @@ users_collection = deficit_table["Users"]
 users_collection.drop()
 deficit_table.create_collection('Users')
 users_collection = deficit_table['Users']
-# x = users_collection.insert_one({"user_name":"Soumi"})
-# print(x.inserted_id)
+
 
 def lambda_handler(event, context):
     request_body = event['body']
@@ -84,8 +83,8 @@ def lambda_handler(event, context):
     except Exception as e:
         print(e)
 
-lambda_handler({
-    'body' : {}
-    },
-    None
-    )
+# lambda_handler({
+#     'body' : {}
+#     },
+#     None
+#     )

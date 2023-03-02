@@ -34,7 +34,7 @@ def response(status_code, body):
         "headers" : {
             "Content-Type" : 'application/json'
         },
-        "body" : json.dumps(body),
+        "body" : json.dumps({'message' : body}),
     }
 
 def lambda_handler(event, context):
@@ -68,16 +68,16 @@ def lambda_handler(event, context):
                             }
                         )
                         print(f'Log Deleted With Date: {request_body["date"]}')
-                        response(200, f'Log Deleted With Date: {request_body["date"]}')
+                        return response(200, f'Log Deleted With Date: {request_body["date"]}')
                     else:
-                        response(401, 'Date Not Found:::: Try Again')
+                        return response(401, 'Date Not Found:::: Try Again')
             else:
-                response(401, f'Log Not Found with Email: {request_body["email"]}')  
+                return response(401, f'Log Not Found with Email: {request_body["email"]}')  
         except Exception as e:
             print(e)
-            response(500, '[ERROR] Internal Server Error')
+            return response(500, '[ERROR] Internal Server Error')
     else:
-        response(401, 'User Not Found:::: Try Again')
+        return response(401, 'User Not Found:::: Try Again')
 
 # lambda_handler({
 #     'body' : {

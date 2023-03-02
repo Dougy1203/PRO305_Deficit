@@ -22,7 +22,7 @@ def response(status_code, body):
         "headers" : {
             "Content-Type" : 'application/json'
         },
-        "body" : json.dumps(body),
+        "body" : json.dumps({'message' : body}),
     }
 
 def lambda_handler(event, context):
@@ -30,11 +30,11 @@ def lambda_handler(event, context):
 
     user = users_collection.find_one({'email' : request_body['email']})
     if user['password'] == request_body['password']:
-        response(200, 'Logged In')
+        return response(200, 'Logged In')
     else:
-        response(401, 'Log In Failed')
+        return response(401, 'Log In Failed')
 
-# lambda_handler({
+# lo = lambda_handler({
 #     'body' : {
 #         'email' : 'liamd1203@gmail.com',
 #         'password' : 'root',
@@ -42,3 +42,5 @@ def lambda_handler(event, context):
 #     },
 #     None
 # )
+
+# print(lo)

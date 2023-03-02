@@ -34,7 +34,7 @@ def response(status_code, body):
         "headers" : {
             "Content-Type" : 'application/json'
         },
-        "body" : json.dumps(body),
+        "body" : json.dumps({'message' : body}),
     }
 
 def lambda_handler(event, context):
@@ -43,12 +43,12 @@ def lambda_handler(event, context):
     if(user and (user['password'] == request_body['password'])):
         try:
             users_collection.delete_one(user)
-            response(200, f'User Deleted with Email: {request_body["email"]}')
+            return response(200, f'User Deleted with Email: {request_body["email"]}')
         except Exception as e:
             print(e)
-            response(500, '[Error] Internal Server Error')
+            return response(500, '[Error] Internal Server Error')
     else:
-        response(401, '[Error] User Validation Error')
+        return response(401, '[Error] User Validation Error')
 
 # lambda_handler({
 #     'body' : {

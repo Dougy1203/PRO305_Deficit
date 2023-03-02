@@ -34,7 +34,7 @@ def response(status_code, body):
         "headers" : {
             "Content-Type" : 'application/json'
         },
-        "body" : json.dumps(body),
+        "body" : json.dumps({'message' : body}),
     }
 
 def lambda_handler(event, context):
@@ -52,12 +52,12 @@ def lambda_handler(event, context):
             }
 
             users_collection.insert_one(new_user)
-            response(200, 'User Created')
+            return response(200, 'User Created')
         except Exception as e:
             print(e)
-            response(500, '[ERROR] Internal Server Error')
+            return response(500, '[ERROR] Internal Server Error')
     else:
-        response(401, f'User Already Exists with Email: {request_body["email"]}')
+        return response(401, f'User Already Exists with Email: {request_body["email"]}')
 
 # lambda_handler({
 #     'body' : {

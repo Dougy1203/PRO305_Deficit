@@ -34,7 +34,7 @@ def response(status_code, body):
         "headers" : {
             "Content-Type" : 'application/json'
         },
-        "body" : json.dumps(body),
+        "body" : json.dumps({'message' : body}),
     }
 
 def lambda_handler(event, context):
@@ -72,7 +72,7 @@ def lambda_handler(event, context):
                         '#ts' : 'logs'
                     }
                 )
-                response(200, 'Log Updated')
+                return response(200, 'Log Updated')
             else:
                 date_in_log_list = False
                 for log in log_list:
@@ -98,7 +98,7 @@ def lambda_handler(event, context):
                                     '#ts' : 'logs'
                                 }
                             )
-                            response(200, 'Log Updated')
+                            return response(200, 'Log Updated')
                 else:
                     log = {
                         'fat' : request_body['log']['fat'],
@@ -122,12 +122,12 @@ def lambda_handler(event, context):
                             '#ts' : 'logs'
                         }
                     )
-                response(200, 'Log Updated')
+                return response(200, 'Log Updated')
         except Exception as e:
             print(e)
-            response(500, '[ERROR] Internal Server Error')
+            return response(500, '[ERROR] Internal Server Error')
     else:
-        response(401, 'User Not Found')
+        return response(401, 'User Not Found')
 
 # log = lambda_handler({
 #     'body' : {

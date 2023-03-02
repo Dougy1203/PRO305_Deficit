@@ -237,7 +237,7 @@ class InputPageState extends State<InputPage> {
                   var request = <String,dynamic> {};
                   request['body'] = requestBody;
                   print(json.encode(request));
-                  var response = await put(kDomain, 'log', json.encode(request));
+                  var response = await post(kDomain, 'log', json.encode(request));
                   print(response['statusCode']);
                   print(response['body']);
                   // CalculatorBrain brain = CalculatorBrain(0,0);

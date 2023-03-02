@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                           print(passController.text);
                           print(request);
                         }
-                        final response = await post(kDomain, 'user', json.encode(request));
+                        final response = await post(kDomain, 'login', json.encode(request));
                         if (kDebugMode) {
                           print(response['statusCode']);
                           print(response['body']);

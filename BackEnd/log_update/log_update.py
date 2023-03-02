@@ -10,20 +10,20 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MONGO_STRING = os.getenv('MONGO_CONNECTION_STRING')
-AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+MS = os.getenv('MCS')
+AAK = os.getenv('AAK')
+ASAK = os.getenv('ASAK')
 
 dynamo_client = boto3.resource(
     service_name="dynamodb",
     region_name="us-east-1",
-    aws_access_key_id= AWS_ACCESS_KEY,
-    aws_secret_access_key= AWS_SECRET_ACCESS_KEY,
+    aws_access_key_id= AAK,
+    aws_secret_access_key= ASAK,
 )
 
 log_table = dynamo_client.Table("Logs")
 
-mongo_client = MongoClient(MONGO_STRING)
+mongo_client = MongoClient(MS)
 
 deficit_table = mongo_client["Deficit"]
 users_collection = deficit_table["Users"]
@@ -129,19 +129,19 @@ def lambda_handler(event, context):
     else:
         response(401, 'User Not Found')
 
-log = lambda_handler({
-    'body' : {
-        'email' : 'cstanley@gmail.com',
-        'password' : 'root',
-        'log' : 
-            {
-            'fat' : 20,
-            'carb': 15,
-            'protein' : 20,
-            'calories' : 300,
-            'date' : '2/20/2023'
-            },
-        }
-    },
-    None
-)
+# log = lambda_handler({
+#     'body' : {
+#         'email' : 'cstanley@gmail.com',
+#         'password' : 'root',
+#         'log' : 
+#             {
+#             'fat' : 20,
+#             'carb': 15,
+#             'protein' : 20,
+#             'calories' : 300,
+#             'date' : '2/20/2023'
+#             },
+#         }
+#     },
+#     None
+# )

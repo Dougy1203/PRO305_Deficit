@@ -9,9 +9,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MONGO_STRING = os.getenv('MONGO_CONNECTION_STRING')
+MS = os.getenv('MCS')
 
-mongo_client = MongoClient(MONGO_STRING)
+mongo_client = MongoClient(MS)
 
 deficit_table = mongo_client["Deficit"]
 users_collection = deficit_table["Users"]

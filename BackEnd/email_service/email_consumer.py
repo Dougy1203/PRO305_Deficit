@@ -11,22 +11,22 @@ import smtplib, ssl
 
 load_dotenv()
 
-MONGO_STRING = os.getenv('MONGO_CONNECTION_STRING')
-AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_ENDPOINT_URL = os.getenv('AWS_ENDPOINT_URL')
+MS = os.getenv('MCS')
+AAK = os.getenv('AAK')
+ASAK = os.getenv('ASAK')
+AEU = os.getenv('AEU')
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-SENDER_EMAIL = os.getenv('SENDER_EMAIL')
-SENDER_PASSWORD = os.getenv('SENDER_PASSWORD')
+SE = os.getenv('SE')
+SP = os.getenv('SP')
 
 context = ssl.create_default_context()
 
 sqs = boto3.resource(
     'sqs',
-    aws_access_key_id= AWS_ACCESS_KEY,
-    aws_secret_access_key= AWS_SECRET_ACCESS_KEY,
-    endpoint_url= AWS_ENDPOINT_URL)
+    aws_access_key_id= AAK,
+    aws_secret_access_key= ASAK,
+    endpoint_url= AEU)
 
 sqs_queue = sqs.get_queue_by_name(QueueName='deficit_queue.fifo')
 
@@ -35,7 +35,7 @@ def lambda_handler(event, context):
     try:
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         server.starttls(context=context)
-        server.login(SENDER_EMAIL, SENDER_PASSWORD)
+        server.login(SE, SP)
         if __name__ == '__main__':
             while True:
                 messages = sqs_queue.receive_messages()
@@ -45,15 +45,15 @@ def lambda_handler(event, context):
                     content = msg['message']
                     print(email)
                     print(content)
-                    server.sendmail(SENDER_EMAIL, email, content)
+                    server.sendmail(SE, email, content)
                     message.delete()
     except Exception as e:
         print(e)
     finally:
         server.quit()
 
-lambda_handler({
-    'body' : {}
-    },
-    None
-    )
+# lambda_handler({
+#     'body' : {}
+#     },
+#     None
+#     )

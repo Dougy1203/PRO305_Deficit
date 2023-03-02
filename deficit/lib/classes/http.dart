@@ -1,13 +1,37 @@
 import 'package:http/http.dart' as http;
 
-Future<int> statusCode(String domain, String path, Map<String, String> body) async {
-  var url = Uri.https(domain, path);
+Future<Map<String, dynamic>> post(String domain, String path, String body) async {
+  var url = Uri.parse(domain + path);
   var response = await http.post(url, body: body);
-  return response.statusCode;
+  Map<String,dynamic> returnMap = {};
+  returnMap['statusCode'] = response.statusCode;
+  returnMap['body'] = response.body;
+  return returnMap;
 }
 
-Future<String> response(String domain, String path, Map<String, String> body) async {
-  var url = Uri.https(domain, path);
-  var response = await http.post(url, body: body);
-  return response.body;
+Future<Map<String, dynamic>> put(String domain, String path, String body) async {
+  var url = Uri.parse(domain + path);
+  var response = await http.put(url, body: body);
+  Map<String,dynamic> returnMap = {};
+  returnMap['statusCode'] = response.statusCode;
+  returnMap['body'] = response.body;
+  return returnMap;
+}
+
+Future<Map<String, dynamic>> delete(String domain, String path, String body) async {
+  var url = Uri.parse(domain + path);
+  var response = await http.delete(url, body: body);
+  Map<String,dynamic> returnMap = {};
+  returnMap['statusCode'] = response.statusCode;
+  returnMap['body'] = response.body;
+  return returnMap;
+}
+
+Future<Map<String, dynamic>> get(String domain, String path) async {
+  var url = Uri.parse(domain + path);
+  var response = await http.get(url);
+  Map<String,dynamic> returnMap = {};
+  returnMap['statusCode'] = response.statusCode;
+  returnMap['body'] = response.body;
+  return returnMap;
 }

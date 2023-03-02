@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+import '../classes/http.dart';
 import '../widgets/constants.dart';
 import '../widgets/main_image.dart';
 import '../widgets/text_input.dart';
@@ -61,15 +65,29 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ]),
                       onPressed: () async {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const InputPage(),
-                          ),
-                        );
                         var map = <String, dynamic>{};
-                        map['userName'] = userController.text;
-                        map['userPassword'] = passController.text;
+                        map['email'] = userController.text;
+                        map['password'] = passController.text;
+                        var request = <String, dynamic> {};
+                        request['body'] = map;
+                        if(kDebugMode) {
+                          print(userController.text);
+                          print(passController.text);
+                          print(request);
+                        }
+                        final response = await post(kDomain, 'user', json.encode(map));
+                        if (kDebugMode) {
+                          print(response['statusCode']);
+                          print(response['body']);
+                        }
+                        if(response['statusCode'] == 200){
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const InputPage(),
+                            ),
+                          );
+                        }
                       }),
                   MaterialButton(
 
@@ -81,7 +99,8 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Center(child: Text('Sign Up')),
                       ),
                     ]),
-                    onPressed: () {
+                    onPressed: ()
+                    {
                       // Navigator.pushReplacement(
                       //     context,
                       //     MaterialPageRoute(

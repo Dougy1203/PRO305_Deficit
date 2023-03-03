@@ -36,25 +36,24 @@ def lambda_handler(event, context):
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         server.starttls(context=context)
         server.login(SE, SP)
-        if __name__ == '__main__':
-            while True:
-                messages = sqs_queue.receive_messages()
-                for message in messages:
-                    msg = json.loads(message.body)
-                    email = msg['email']
-                    content = msg['message']
-                    print(email)
-                    print(content)
-                    server.sendmail(SE, email, content)
-                    message.delete()
+        while True:
+            messages = sqs_queue.receive_messages()
+            for message in messages:
+                msg = json.loads(message.body)
+                email = msg['email']
+                content = msg['message']
+                print(email)
+                print(content)
+                server.sendmail(SE, email, content)
+                message.delete()
     except Exception as e:
         print('exception')
         print(e)
-    finally:
-        server.quit()
 
-lambda_handler({
-    'body' : {}
-    },
-    None
-    )
+
+if __name__ == "__main__":
+    lambda_handler({
+        'body' : {}
+        },
+        None
+        )

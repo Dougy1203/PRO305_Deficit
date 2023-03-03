@@ -48,19 +48,27 @@ def lambda_handler(event, context):
             logs = table_logs['Items']
             log_data = logs[0]
             log_list = log_data['logs']
-            return response(200, log_list)
+            final_logs = []
+            for log in log_list:
+                temp_log = {}
+                temp_log["fat"] = int(log['fat'])
+                temp_log["protein"] = int(log['protein'])
+                temp_log["carb"] = int(log['carb'])
+                temp_log["calories"] = int(log['calories'])
+                final_logs.append(temp_log)
+            return response(200, json.dumps(final_logs))
         except Exception as e:
             print(e)
             return response(500, '[ERROR] Internal Server Error')
     else:
         return response(401, 'Login In Attempt Failed')
 
-# lambda_handler({
+# loc = lambda_handler({
 #     'body' : {
-#         'email' : '',
-#         'password' : '',
-#         'log' : [],
+#         'email' : 'cstanley@gmail.com',
+#         'password' : 'root',
 #         }
 #     },
 #     None
 # )
+# print(loc)

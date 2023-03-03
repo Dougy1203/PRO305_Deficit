@@ -129,19 +129,24 @@ def lambda_handler(event, context):
     else:
         return response(401, 'User Not Found')
 
-# log = lambda_handler({
-#     'body' : {
-#         'email' : 'cstanley@gmail.com',
-#         'password' : 'root',
-#         'log' : 
-#             {
-#             'fat' : 20,
-#             'carb': 15,
-#             'protein' : 20,
-#             'calories' : 300,
-#             'date' : '2/20/2023'
-#             },
-#         }
-#     },
-#     None
-# )
+fat = int(20)
+carb = int(15)
+protein = int(20)
+calories = int(300)
+
+log = lambda_handler({
+    'body' : {
+        'email' : 'cstanley@gmail.com',
+        'password' : 'root',
+        'log' : 
+            {
+            'fat' : fat,
+            'carb': carb,
+            'protein' : protein,
+            'calories' : calories,
+            'date' : '2/20/2023'
+            },
+        }
+    },
+    None
+)

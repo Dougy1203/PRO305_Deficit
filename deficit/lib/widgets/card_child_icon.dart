@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
+import '../classes/constants.dart';
 
 class CardChildIcon extends StatelessWidget {
   const CardChildIcon({super.key, required this.icon, required this.text});

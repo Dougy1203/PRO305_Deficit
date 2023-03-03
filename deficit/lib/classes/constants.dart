@@ -24,6 +24,11 @@ const kContainerText = TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
 );
+const kLogText = TextStyle(
+  fontSize: 20.0,
+  color: kPrimaryColor,
+  fontWeight: FontWeight.bold,
+);
 const kTitleTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
   fontSize: 40,

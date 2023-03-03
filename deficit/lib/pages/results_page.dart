@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/constants.dart';
+import '../classes/constants.dart';
 import '../widgets/reusable_card.dart';
 import '../widgets/bottom_button.dart';
 

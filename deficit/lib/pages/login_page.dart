@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 import '../classes/http.dart';
-import '../widgets/constants.dart';
+import '../classes/constants.dart';
 import '../widgets/main_image.dart';
 import '../widgets/text_input.dart';
 import 'input_page.dart';

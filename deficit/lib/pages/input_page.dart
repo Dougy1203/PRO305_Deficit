@@ -6,7 +6,7 @@ import '../classes/http.dart';
 import '../widgets/bottom_button.dart';
 import '../classes/calculator_brain.dart';
 import '../widgets/card_child_icon.dart';
-import '../widgets/constants.dart';
+import '../classes/constants.dart';
 import '../main.dart';
 import 'results_page.dart';
 import '../widgets/reusable_card.dart';

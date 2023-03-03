@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
+import '../classes/constants.dart';
 class MyTextField extends StatefulWidget {
   MyTextField({super.key, required this.text, required this.icon, required this.obscured, required this.myController});
   final String text;

@@ -39,11 +39,6 @@ def lambda_handler(event, context):
         liam = 'liamd1203@gmail.com'
         chris = 'cstanley@gmail.com'
 
-        # current_time = datetime.now()
-        # current_date = f'{current_time.month}/{current_time.day}/{current_time.year}'
-
-        # print(current_date)
-
         users_collection.insert_one({'email' : liam, 'password' : 'root', 'firstName' : 'Liam', 'lastName' : 'Douglas', 'goal' : json.dumps({})})
         users_collection.insert_one({'email' : chris, 'password' : 'root', 'firstName' : 'Christopher', 'lastName' : 'Stanley', 'goal' : json.dumps({})})
 

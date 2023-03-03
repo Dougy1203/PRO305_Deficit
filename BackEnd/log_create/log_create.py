@@ -52,7 +52,7 @@ def lambda_handler(event, context):
                 log_table.put_item(
                     Item={
                         'email' : request_body['email'],
-                        'logs' : request_body['logs']
+                        'logs' : [request_body['logs']]
                     },
                 )
                 return response(200, f'Log Created with Email: {request_body["email"]}')

@@ -134,19 +134,19 @@ carb = int(15)
 protein = int(20)
 calories = int(300)
 
-log = lambda_handler({
-    'body' : {
-        'email' : 'cstanley@gmail.com',
-        'password' : 'root',
-        'log' : 
-            {
-            'fat' : fat,
-            'carb': carb,
-            'protein' : protein,
-            'calories' : calories,
-            'date' : '2/20/2023'
-            },
-        }
-    },
-    None
-)
+# log = lambda_handler({
+#     'body' : {
+#         'email' : 'cstanley@gmail.com',
+#         'password' : 'root',
+#         'log' : 
+#             {
+#             'fat' : fat,
+#             'carb': carb,
+#             'protein' : protein,
+#             'calories' : calories,
+#             'date' : '2/20/2023'
+#             },
+#         }
+#     },
+#     None
+# )

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-String kDomain = "https://tz7f8mziii.execute-api.us-east-1.amazonaws.com/prod/";
+String kDomain = "https://bwzl9ll3cd.execute-api.us-east-1.amazonaws.com/prod/";
 
 const kBottomContainerHeight = 80.0;
 const kBmiPrimary = Color(0xFF0A0E21);

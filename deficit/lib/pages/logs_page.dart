@@ -1,16 +1,6 @@
-import 'dart:convert';
-
-import 'package:deficit/widgets/reusable_card.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
-
-import '../classes/http.dart';
 import '../classes/constants.dart';
 import '../widgets/main_image.dart';
-import '../widgets/reusable_log_card.dart';
-import '../widgets/text_input.dart';
-import 'input_page.dart';
 
 class LogPage extends StatefulWidget {
   const LogPage({Key? key, required this.email, required this.pass, required this.logs}) : super(key: key);
@@ -28,7 +18,7 @@ class _LogPageState extends State<LogPage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: kPrimaryColor,
-          title: const Text('LOGIN'),
+          title: const Text('LOGS'),
           titleSpacing: 2.0,
           centerTitle: true,
         ),

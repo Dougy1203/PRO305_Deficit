@@ -228,6 +228,7 @@ class InputPageState extends State<InputPage> {
                   log['carb'] = carbs;
                   log['protein'] = protein;
                   log['fat'] = fat;
+                  log['date'] = "2/20/24";
 
                   Map<String,dynamic> requestBody = {};
                   requestBody['email'] = widget.email;
@@ -237,7 +238,7 @@ class InputPageState extends State<InputPage> {
                   var request = <String,dynamic> {};
                   request['body'] = requestBody;
                   print(json.encode(request));
-                  var response = await post(kDomain, 'log', json.encode(request));
+                  var response = await put(kDomain, 'log', json.encode(request));
                   print(response['statusCode']);
                   print(response['body']);
                   // CalculatorBrain brain = CalculatorBrain(0,0);

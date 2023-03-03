@@ -51,12 +51,12 @@ def lambda_handler(event, context):
             final_logs = []
             for log in log_list:
                 temp_log = {}
-                temp_log["fat"] = int(log['fat'])
-                temp_log["protein"] = int(log['protein'])
-                temp_log["carb"] = int(log['carb'])
-                temp_log["calories"] = int(log['calories'])
+                temp_log['fat'] = int(log['fat'])
+                temp_log['protein'] = int(log['protein'])
+                temp_log['carb'] = int(log['carb'])
+                temp_log['calories'] = int(log['calories'])
                 final_logs.append(temp_log)
-            return response(200, json.dumps(final_logs))
+            return response(200, final_logs)
         except Exception as e:
             print(e)
             return response(500, '[ERROR] Internal Server Error')

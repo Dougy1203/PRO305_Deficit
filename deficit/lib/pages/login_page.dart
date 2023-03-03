@@ -1,10 +1,7 @@
 import 'dart:convert';
-
 import 'package:deficit/pages/signup_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
-
 import '../classes/http.dart';
 import '../classes/constants.dart';
 import '../widgets/main_image.dart';

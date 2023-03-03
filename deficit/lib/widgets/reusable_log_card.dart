@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
 
 class ReusableLogCard extends StatelessWidget {
   const ReusableLogCard({super.key, required this.color, required this.cardChild, required this.onPress});

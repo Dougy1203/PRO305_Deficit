@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:deficit/widgets/log_card.dart';
 import 'package:deficit/widgets/reusable_log_card.dart';
 import 'package:http/http.dart' as http;

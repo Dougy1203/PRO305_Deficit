@@ -1,17 +1,9 @@
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../classes/http.dart';
 import '../widgets/bottom_button.dart';
-import '../classes/calculator_brain.dart';
-import '../widgets/card_child_icon.dart';
 import '../classes/constants.dart';
-import '../main.dart';
-import 'results_page.dart';
 import '../widgets/reusable_card.dart';
-import '../widgets/round_icon_button.dart';
-import '../classes/rsa_encryption.dart' as rsa;
 
 class InputPage extends StatefulWidget {
   InputPage({super.key, required this.email, required this.pass});

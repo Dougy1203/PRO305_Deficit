@@ -1,6 +1,4 @@
-import 'package:deficit/pages/input_page.dart';
 import 'package:deficit/pages/login_page.dart';
-import 'package:deficit/pages/logs_page.dart';
 import 'package:flutter/material.dart';
 import 'classes/constants.dart';
 

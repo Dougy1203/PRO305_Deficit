@@ -152,10 +152,15 @@ This Collaborative Project was built to gain experience utilizing Service Orient
 ### How to Start
 </u>
 //UNDER REVISEMENT
-1. Once downloads have been complete lets start of straightaway into building our docker containers.
+1. Once downloads have been complete lets start straightaway into building our docker containers.
 2. Go into the cloned repositories folder.
 3. Navigate to the BackEnd Folder
-4. Open 'appsettings.json' in each Microservice and enter your Mongo Connection String where prompted
+4. create a .env in each Microservice Folder and enter your Mongo Connection String as MCS="YOUR_STRING_HERE"
+5. Add Value AAK(AWS_ACCESS_KEY) as AAS=YOUR_ACCESS_KEY
+6. Add Value ASAK(AWS_SECRET_ACCESS_KEY) as ASAK=YOUR_SECRET_ACCESS_KEY
+7. For the Email Microservice you'll also need to add the AWS SQS AWS_ENDPOINT_URL(as AEU)
+8. CONTINUED:: You'll need your gmail that has computer/code access address as SE(Sender_Email)
+9. CONTINUED:: As well as the google secure password for the account as SP(Sender_Password)
 5. Open the Terminal of your choosing and run 'docker compose up -d' to deploy the Microservices in a Docker Environment
 6. Open Android Studio and Navigate to Device Manager
 7. Create a Device and start the Android Emulator

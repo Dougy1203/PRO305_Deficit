@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:deficit/pages/signup_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -101,10 +102,12 @@ class _LoginPageState extends State<LoginPage> {
                     ]),
                     onPressed: ()
                     {
-                      // Navigator.pushReplacement(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => const SignUp()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignupPage()
+                          )
+                      );
                     },
                   ),
                 ],

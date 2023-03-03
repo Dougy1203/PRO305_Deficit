@@ -4,7 +4,7 @@ import 'package:deficit/widgets/log_card.dart';
 import 'package:deficit/widgets/reusable_log_card.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import '../widgets/constants.dart';
+import '../classes/constants.dart';
 
 Future<Map<String, dynamic>> post(String domain, String path, String body) async {
   var url = Uri.parse(domain + path);

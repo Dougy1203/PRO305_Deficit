@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../classes/http.dart';
+import '../classes/rsa_encryption.dart';
 import '../widgets/bottom_button.dart';
 import '../classes/constants.dart';
+import '../widgets/main_image.dart';
 import '../widgets/reusable_card.dart';
 import 'logs_page.dart';
 
@@ -24,7 +26,7 @@ class InputPageState extends State<InputPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('MACRO COUNTER'),
+          title: MainImage('assets/logo_complete.png', 15.0, 200.0, 200.0),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -223,59 +225,61 @@ class InputPageState extends State<InputPage> {
                   log['fat'] = fat;
                   log['date'] = "2/20/24";
 
-                  Map<String,dynamic> requestBody = {};
-                  requestBody['email'] = widget.email;
-                  requestBody['password'] = widget.pass;
-                  requestBody['log'] = log;
+                      Map<String,dynamic> requestBody = {};
+                      requestBody['email'] = widget.email;
+                      requestBody['password'] = widget.pass;
+                      requestBody['log'] = log;
 
-                  var request = <String,dynamic> {};
-                  request['body'] = requestBody;
-                  print(json.encode(request));
-                  var response = await put(kDomain, 'log', json.encode(request));
-                  print(response['statusCode']);
-                  print(response['body']);
+                      var request = <String,dynamic> {};
+                      request['body'] = requestBody;
+                      print(json.encode(request));
+                      var response = await put(kDomain, 'log', json.encode(request));
+                      print(response['statusCode']);
+                      print(response['body']);
 
 
-                  log = {};
-                  log['email'] = widget.email;
-                  log['password'] = widget.pass;
-                  requestBody = {};
-                  requestBody['body'] = log;
-                  response = await post(kDomain, "logs", json.encode(requestBody));
-                  print(requestBody);
-                  print(response);
-                  var body = json.decode(response['body']);
-                  print(body['message']);
-                },
-                buttonTitle: 'Add Log',
+                      log = {};
+                      log['email'] = widget.email;
+                      log['password'] = widget.pass;
+                      requestBody = {};
+                      requestBody['body'] = log;
+                      response = await post(kDomain, "logs", json.encode(requestBody));
+                      print(requestBody);
+                      print(response);
+                      var body = json.decode(response['body']);
+                      print(body['message']);
+                    },
+                    buttonTitle: 'Add Log',
+                  ),
+                  BottomButton(
+                    onTap: () async {
+                      Map<String,dynamic> log = {};
+                      Map<String,dynamic> requestBody = {};
+                      log = {};
+                      String email = widget.email;
+                      String pass = widget.pass;
+                      log['email'] = email;
+                      log['password'] = pass;
+                      requestBody = {};
+                      requestBody['body'] = log;
+                      var response = await post(kDomain, "logs", json.encode(requestBody));
+                      print(response);
+                      var body = json.decode(response['body']);
+                      log = (body['message'][0]);
+                      List<dynamic> b = body['message'];
+
+                      List<Map<String,dynamic>> userLogs = <Map<String,dynamic>>[];
+                      for(var c in b){
+                        userLogs.add(c);
+                      }
+                      List<Widget> widgets = futureLogs(userLogs);
+                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LogPage(email: widget.email, pass: widget.pass, logs: widgets)));
+                    },
+                    buttonTitle: 'View Logs',
+                  ),
+                ],
               ),
-              BottomButton(
-                onTap: () async {
-                  Map<String,dynamic> log = {};
-                  Map<String,dynamic> requestBody = {};
-                  log = {};
-                  log['email'] = widget.email;
-                  log['password'] = widget.pass;
-                  requestBody = {};
-                  requestBody['body'] = log;
-                  var response = await post(kDomain, "logs", json.encode(requestBody));
-                  print(response);
-                  var body = json.decode(response['body']);
-                  log = (body['message'][0]);
-                  List<dynamic> b = body['message'];
-
-                  List<Map<String,dynamic>> userLogs = <Map<String,dynamic>>[];
-                  for(var c in b){
-                    print(c['fat']);
-                    userLogs.add(c);
-                  }
-                  List<Widget> widgets = futureLogs(userLogs);
-                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LogPage(email: widget.email, pass: widget.pass, logs: widgets)));
-                },
-                buttonTitle: 'View Logs',
-              ),
-            ],
-          ),
-        ));
+            ),
+        );
   }
 }

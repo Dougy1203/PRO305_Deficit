@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../classes/http.dart';
 import '../classes/constants.dart';
+import '../classes/rsa_encryption.dart';
 import '../widgets/main_image.dart';
 import '../widgets/text_input.dart';
 import 'input_page.dart';
@@ -64,8 +65,10 @@ class _LoginPageState extends State<LoginPage> {
                       ]),
                       onPressed: () async {
                         var map = <String, dynamic>{};
-                        map['email'] = userController.text;
-                        map['password'] = passController.text;
+                        String email = userController.text;
+                        String pass = passController.text;
+                        map['email'] = email;
+                        map['password'] = pass;
                         var request = <String, dynamic> {};
                         request['body'] = map;
                         if(kDebugMode) {

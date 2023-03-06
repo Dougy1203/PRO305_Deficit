@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../classes/http.dart';
 import '../classes/constants.dart';
+import '../classes/rsa_encryption.dart';
 import '../widgets/text_input.dart';
 
 class SignupPage extends StatefulWidget {
@@ -79,11 +80,13 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     onPressed: () async {
                       if (passController.text == confirmPassController.text) {
+                        String email = emailController.text;
+                        String pass = passController.text;
                         var map = <String, dynamic>{};
                         map['firstName'] = fNameController.text;
                         map['lastName'] = lNameController.text;
-                        map['email'] = emailController.text;
-                        map['password'] = passController.text;
+                        map['email'] = email;
+                        map['password'] = pass;
                         map['goal'] = {};
                         map['logs'] = [];
 

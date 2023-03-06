@@ -1,38 +1,36 @@
 import boto3
+import json
 import os
-from os import getenv
+import random
 
-AAK = os.getenv('AAK')
-ASAK = os.getenv('ASAK')
-AEU = os.getenv('AEU')
+sqs = boto3.client('sqs')
 
-sqs = boto3.resource(
-    'sqs',
-    aws_access_key_id= AAK,
-    aws_secret_access_key= ASAK,
-    endpoint_url= AEU)
+def response(status_code, body):
+    return {
+        "statusCode" : status_code,
+        "headers" : {
+            "Content-Type" : 'application/json'
+        },
+        "body" : json.dumps({'message' : body}),
+    }
 
-sqs_queue = sqs.get_queue_by_name(QueueName='deficit_queue.fifo')
-
-def lambda_handler(message_body, message_attributes=None):
-
-    if not message_attributes:
-        message_attributes = {}
-
-        try:
-            response = sqs_queue.send_message(
-                MessageBody = message_body,
-                MessageAttributes = message_attributes
-            )
-
-            return 'Message sent'
-        except :
-            return 'Send message failed.'
-    else:
-        return response
+def lambda_handler(event, context):
+    body = event['body']
+    res = {"email" : body['email'], 'message' : body['message']}
+    message = sqs.send_message(
+        QueueUrl='https://sqs.us-east-1.amazonaws.com/278029930798/deficit_queue.fifo',
+        MessageBody= json.dumps(res),
+        MessageDeduplicationId=str(random.random()),
+        MessageGroupId=str(random.random())
+    )
+    return response(200, "Message Send")
     
-result = lambda_handler(
-    "Testing if it is working"
-)
 
-print(result)
+# lambda_handler(
+#     {
+#         "body" : {
+#             "email" : "liamd1203@gmail.com",
+#             "message" : "this is a message again"
+#         }
+#     }, None
+# )

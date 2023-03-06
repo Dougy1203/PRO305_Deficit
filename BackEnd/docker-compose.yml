@@ -1,6 +1,9 @@
 version: "3.9"
 services:
-  email:
+  email_producer:
+    build: ./email_producer
+    image: email_producer:1.0
+  email_consumer:
     build: ./email_service
     image: email_service:1.0
   init:

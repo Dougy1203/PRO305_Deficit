@@ -45,27 +45,10 @@ Future<Map<String, dynamic>> get(String domain, String path) async {
   return returnMap;
 }
 
-
-Future<List<Widget>> futureLogs(String email, String password) async {
-  List<Widget> widgets = [];
-  try {
-    Map<String,dynamic> request = {};
-    request['email'] = email;
-    request['password'] = password;
-    Map<String,dynamic> requestBody = {};
-    requestBody['body'] = request;
-    dynamic response = await post(kDomain, 'logs', json.encode(requestBody));
-    response.forEach((element)=>{
-      widgets.add(ReusableLogCard(color: kPrimaryColor, cardChild: logs(element), onPress: (){}))
-    });
-    // widget.files.forEach((k, v) => widgets.add(PDFNetwork(title: k, uri: v)));
-    // for (String s in widget.modules) {
-    //   if (s.isNotEmpty) {
-    //     widgets.add(Module(modName: s));
-    //   }
-    // }
-    return widgets;
-  } catch (e) {
-    return widgets;
+List<Widget> futureLogs(List<Map<String,dynamic>> passedLogs){
+  List<Widget> widgets = <Widget>[];
+  for(Map<String,dynamic> log in passedLogs){
+    widgets.add(logs(log));
   }
+  return widgets;
 }

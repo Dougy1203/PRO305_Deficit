@@ -80,10 +80,12 @@ class _SignupPageState extends State<SignupPage> {
                     onPressed: () async {
                       if (passController.text == confirmPassController.text) {
                         var map = <String, dynamic>{};
-                        map['firstname'] = fNameController.text;
-                        map['lastname'] = lNameController.text;
+                        map['firstName'] = fNameController.text;
+                        map['lastName'] = lNameController.text;
                         map['email'] = emailController.text;
                         map['password'] = passController.text;
+                        map['goal'] = {};
+                        map['logs'] = [];
 
                         var request = <String, dynamic> {};
                         request['body'] = map;
@@ -96,7 +98,12 @@ class _SignupPageState extends State<SignupPage> {
                           print(response['statusCode']);
                           print(response['body']);
                         }
-                        if(response['statusCode'] == 200){
+                        final response2 = await post(kDomain, 'log', json.encode(request));
+                        if (kDebugMode) {
+                          print(response2['statusCode']);
+                          print(response2['body']);
+                        }
+                        if(response['statusCode'] == 200 && response2['statusCode'] == 200){
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

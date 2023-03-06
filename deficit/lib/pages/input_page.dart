@@ -4,6 +4,7 @@ import '../classes/http.dart';
 import '../widgets/bottom_button.dart';
 import '../classes/constants.dart';
 import '../widgets/reusable_card.dart';
+import 'logs_page.dart';
 
 class InputPage extends StatefulWidget {
   InputPage({super.key, required this.email, required this.pass});
@@ -233,11 +234,45 @@ class InputPageState extends State<InputPage> {
                   var response = await put(kDomain, 'log', json.encode(request));
                   print(response['statusCode']);
                   print(response['body']);
-                  // CalculatorBrain brain = CalculatorBrain(0,0);
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => ResultsPage(bmiResults: brain.calculateBmi(), bmiText: brain.getResult(), bmiInterpretation: brain.getInterp(),)));
+
+
+                  log = {};
+                  log['email'] = widget.email;
+                  log['password'] = widget.pass;
+                  requestBody = {};
+                  requestBody['body'] = log;
+                  response = await post(kDomain, "logs", json.encode(requestBody));
+                  print(requestBody);
+                  print(response);
+                  var body = json.decode(response['body']);
+                  print(body['message']);
                 },
                 buttonTitle: 'Add Log',
+              ),
+              BottomButton(
+                onTap: () async {
+                  Map<String,dynamic> log = {};
+                  Map<String,dynamic> requestBody = {};
+                  log = {};
+                  log['email'] = widget.email;
+                  log['password'] = widget.pass;
+                  requestBody = {};
+                  requestBody['body'] = log;
+                  var response = await post(kDomain, "logs", json.encode(requestBody));
+                  print(response);
+                  var body = json.decode(response['body']);
+                  log = (body['message'][0]);
+                  List<dynamic> b = body['message'];
+
+                  List<Map<String,dynamic>> userLogs = <Map<String,dynamic>>[];
+                  for(var c in b){
+                    print(c['fat']);
+                    userLogs.add(c);
+                  }
+                  List<Widget> widgets = futureLogs(userLogs);
+                  Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => LogPage(email: widget.email, pass: widget.pass, logs: widgets)));
+                },
+                buttonTitle: 'View Logs',
               ),
             ],
           ),

@@ -57,3 +57,11 @@ if __name__ == "__main__":
         },
         None
         )
+
+
+# {
+#     "body" : {
+#         "email" : "liamd1203@gmail.com",
+#         "password" : "root"
+#     }
+# }

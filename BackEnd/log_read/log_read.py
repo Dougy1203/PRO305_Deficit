@@ -50,6 +50,8 @@ def lambda_handler(event, context):
             log_list = log_data['logs']
             final_logs = []
             for log in log_list:
+                if(len(log) == 0):
+                    return response(200, final_logs)
                 temp_log = {}
                 temp_log['fat'] = int(log['fat'])
                 temp_log['protein'] = int(log['protein'])
@@ -65,7 +67,7 @@ def lambda_handler(event, context):
 
 # loc = lambda_handler({
 #     'body' : {
-#         'email' : 'cstanley@gmail.com',
+#         'email' : 'jblaze@gmail.com',
 #         'password' : 'root',
 #         }
 #     },

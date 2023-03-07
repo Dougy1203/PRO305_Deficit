@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+
+import '../widgets/log_card.dart';
+import 'http.dart';
 
 String kDomain = "https://ddytbwzh1c.execute-api.us-east-1.amazonaws.com/pro/";
 
@@ -62,4 +67,56 @@ Widget kRowSpace(double space){
   return SizedBox(
     width: space,
   );
+}
+
+Future<Map<String,dynamic>> kDeleteLog(String email, String pass, String date)async{
+  Map<String,dynamic> log = {};
+  log['email'] = email;
+  log['password'] = pass;
+  log['date'] = date;
+  Map<String,dynamic> request = {};
+  request['body'] = log;
+  var response = await delete(kDomain, 'log', json.encode(request));
+  return response;
+}
+
+Future<Map<String,dynamic>> kAddLog(int calories, int carbs, int protein, int fat, String date, String email, String pass)async{
+  Map<String, dynamic> log = {};
+  log['calories'] = calories;
+  log['carb'] = carbs;
+  log['protein'] = protein;
+  log['fat'] = fat;
+  log['date'] = date;
+
+  Map<String, dynamic> requestBody = {};
+  requestBody['email'] = email;
+  requestBody['password'] = pass;
+  requestBody['log'] = log;
+
+  var request = <String, dynamic>{};
+  request['body'] = requestBody;
+  var response = await post(kDomain, 'log', json.encode(request));
+  return response;
+}
+
+Future<List<Widget>> kLogRead(String email, String password) async {
+  Map<String, dynamic> log = {};
+  Map<String, dynamic> requestBody = {};
+  log = {};
+  log['email'] = email;
+  log['password'] = password;
+  requestBody = {};
+  requestBody['body'] = log;
+  var response =
+      await post(kDomain, "logs", json.encode(requestBody));
+  var body = json.decode(response['body']);
+  log = (body['message'][0]);
+  List<dynamic> b = body['message'];
+  List<Map<String, dynamic>> userLogs =
+  <Map<String, dynamic>>[];
+  for (var c in b) {
+    userLogs.add(c);
+  }
+  List<Widget> widgets = futureLogs(userLogs);
+  return widgets;
 }

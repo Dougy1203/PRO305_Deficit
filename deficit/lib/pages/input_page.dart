@@ -258,47 +258,24 @@ class InputPageState extends State<InputPage> {
             ),
             BottomButton(
               onTap: () async {
-                Map<String, dynamic> log = {};
-                log['calories'] = calories;
-                log['carb'] = carbs;
-                log['protein'] = protein;
-                log['fat'] = fat;
-                log['date'] = dateController.text;
-
-                Map<String, dynamic> requestBody = {};
-                requestBody['email'] = widget.email;
-                requestBody['password'] = widget.pass;
-                requestBody['log'] = log;
-
-                var request = <String, dynamic>{};
-                request['body'] = requestBody;
+                Map<String,dynamic> request = await kAddLog(calories, carbs, protein, fat, dateController.text, widget.email, widget.pass);
                 var response = await put(kDomain, 'log', json.encode(request));
+                if(response['statusCode'] == 200){
+                  List<Widget> widgets = await kLogRead(widget.email, widget.pass);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LogPage(
+                              email: widget.email,
+                              pass: widget.pass,
+                              logs: widgets)));
+                }
               },
               buttonTitle: 'Add Log',
             ),
             BottomButton(
               onTap: () async {
-                Map<String, dynamic> log = {};
-                Map<String, dynamic> requestBody = {};
-                log = {};
-                String email = widget.email;
-                String pass = widget.pass;
-                log['email'] = email;
-                log['password'] = pass;
-                requestBody = {};
-                requestBody['body'] = log;
-                var response =
-                    await post(kDomain, "logs", json.encode(requestBody));
-                var body = json.decode(response['body']);
-                log = (body['message'][0]);
-                List<dynamic> b = body['message'];
-
-                List<Map<String, dynamic>> userLogs =
-                    <Map<String, dynamic>>[];
-                for (var c in b) {
-                  userLogs.add(c);
-                }
-                List<Widget> widgets = futureLogs(userLogs);
+                List<Widget> widgets = await kLogRead(widget.email, widget.pass);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -309,6 +286,25 @@ class InputPageState extends State<InputPage> {
               },
               buttonTitle: 'View Logs',
             ),
+            // BottomButton(
+            //   onTap: () async {
+            //     var response = await kDeleteLog(widget.email, widget.pass, dateController.text);
+            //     print(dateController.text);
+            //     print(response['statusCode']);
+            //     print(response['body']);
+            //     if(response['statusCode'] == 200){
+            //       List<Widget> widgets = await kLogRead(widget.email, widget.pass);
+            //       Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: (context) => LogPage(
+            //                   email: widget.email,
+            //                   pass: widget.pass,
+            //                   logs: widgets)));
+            //     }
+            //   },
+            //   buttonTitle: 'Delete Log',
+            // ),
           ],
         ),
       ),

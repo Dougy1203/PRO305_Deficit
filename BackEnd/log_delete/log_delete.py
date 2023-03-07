@@ -79,12 +79,12 @@ def lambda_handler(event, context):
     else:
         return response(401, 'User Not Found:::: Try Again')
 
-# lambda_handler({
-#     'body' : {
-#         'email' : 'cstanley@gmail.com',
-#         'password' : 'root',
-#         'date' : '2/20/2023',
-#         }
-#     },
-#     None
-# )
+lambda_handler({
+    'body' : {
+        'email' : 'liamd1203@gmail.com',
+        'password' : 'root',
+        'date' : '3/9/2023',
+        }
+    },
+    None
+)

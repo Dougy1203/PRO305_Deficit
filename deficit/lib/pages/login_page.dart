@@ -7,6 +7,7 @@ import '../classes/constants.dart';
 import '../classes/rsa_encryption.dart';
 import '../widgets/main_image.dart';
 import '../widgets/text_input.dart';
+import 'edit_delete_page.dart';
 import 'input_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -111,6 +112,26 @@ class _LoginPageState extends State<LoginPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => const SignupPage()
+                          )
+                      );
+                    },
+                  ),
+                  MaterialButton(
+
+                    child: Wrap(children: [
+                      Container(
+                        width: 90.0,
+                        height: 30.0,
+                        color: kPrimaryColor,
+                        child: const Center(child: Text('Edit User')),
+                      ),
+                    ]),
+                    onPressed: ()
+                    {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const EditUserPage()
                           )
                       );
                     },

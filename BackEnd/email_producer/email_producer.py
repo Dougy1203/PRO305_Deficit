@@ -26,11 +26,11 @@ def lambda_handler(event, context):
     return response(200, "Message Send")
     
 
-# lambda_handler(
-#     {
-#         "body" : {
-#             "email" : "liamd1203@gmail.com",
-#             "message" : "this is a message again"
-#         }
-#     }, None
-# )
+lambda_handler(
+    {
+        "body" : {
+            "email" : "liamd1203@gmail.com",
+            "message" : "this is a message again"
+        }
+    }, None
+)

@@ -50,6 +50,7 @@ def lambda_handler(event, context):
             log_list = log_data['logs']
 
             if(len(log_list) == 0):
+                print('new log')
                 log = {
                     'fat' : request_body['log']['fat'],
                     'carb' : request_body['log']['carb'],   
@@ -74,8 +75,11 @@ def lambda_handler(event, context):
                 )
                 return response(200, 'Log Updated')
             else:
+                print('updating log with date')
                 date_in_log_list = False
+                print(log_list)
                 for log in log_list:
+                    print(log)
                     if(log['date'] == request_body['log']['date']):
                         date_in_log_list = True
                 if(date_in_log_list):
@@ -85,7 +89,7 @@ def lambda_handler(event, context):
                             log['carb'] += request_body['log']['carb']
                             log['protein'] += request_body['log']['protein']
                             log['calories'] += request_body['log']['calories']
-
+                            print(log)
                             log_table.update_item(
                                 Key={
                                     'email' : request_body['email']
@@ -100,6 +104,7 @@ def lambda_handler(event, context):
                             )
                             return response(200, 'Log Updated')
                 else:
+                    print('add log to list')
                     log = {
                         'fat' : request_body['log']['fat'],
                         'carb' : request_body['log']['carb'],   
@@ -136,7 +141,7 @@ calories = int(300)
 
 # log = lambda_handler({
 #     'body' : {
-#         'email' : 'cstanley@gmail.com',
+#         'email' : 'Liamd1203@gmail.com',
 #         'password' : 'root',
 #         'log' : 
 #             {
@@ -150,3 +155,4 @@ calories = int(300)
 #     },
 #     None
 # )
+# print(log)

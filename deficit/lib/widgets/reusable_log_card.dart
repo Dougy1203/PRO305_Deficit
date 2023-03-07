@@ -11,7 +11,7 @@ class ReusableLogCard extends StatelessWidget {
     return GestureDetector(
       onTap: onPress,
       child: Container(
-        height: 100,
+        height: 150,
         margin: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: color,

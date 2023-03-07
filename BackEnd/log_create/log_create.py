@@ -52,7 +52,7 @@ def lambda_handler(event, context):
                 log_table.put_item(
                     Item={
                         'email' : request_body['email'],
-                        'logs' : [request_body['logs']]
+                        'logs' : request_body['logs']
                     },
                 )
                 return response(200, f'Log Created with Email: {request_body["email"]}')
@@ -61,3 +61,11 @@ def lambda_handler(event, context):
             return response(500, '[ERROR] Internal Server Error')
     else:
         return response(401, '[ERROR] Invalid User')
+    
+# print(lambda_handler({
+#     "body" : {
+#         "email" : "Liamd1203@gmail.com",
+#         "password" : "root",
+#         "logs" : []
+#     }
+# }, None))

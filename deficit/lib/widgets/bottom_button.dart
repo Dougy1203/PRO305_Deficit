@@ -11,7 +11,7 @@ class BottomButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         color: kTertiaryColor,
-        margin: const EdgeInsets.only(top: 10),
+        margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
         height: kBottomContainerHeight,
         width: double.infinity,
         child: Row(

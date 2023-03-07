@@ -11,6 +11,11 @@ const kPrimaryColor = Color(0xFF7C9875);
 const kSecondaryColor = Color(0xFF0A2342);
 const kTertiaryColor = Color(0xFF96BE8C);
 const kSuggestiveText = Colors.white;
+
+const kDateTextStyle = TextStyle(
+  fontSize: 40.0,
+  fontWeight: FontWeight.w900,
+);
 const kCardTextStyle = TextStyle(
   fontSize: 50.0,
   fontWeight: FontWeight.w900,
@@ -38,7 +43,7 @@ const kResultTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
   fontSize: 22.0,
   letterSpacing: 2.0,
-  color: Color(0xFF24D876),
+  color: kSecondaryColor,
 );
 const kBMITextStyle = TextStyle(
   fontWeight: FontWeight.bold,
@@ -47,3 +52,14 @@ const kBMITextStyle = TextStyle(
 const kBodyTextStyle = TextStyle(
   fontSize: 22.0,
 );
+
+Widget kColumnSpace(double space){
+  return SizedBox(
+  height: space,
+  );
+}
+Widget kRowSpace(double space){
+  return SizedBox(
+    width: space,
+  );
+}

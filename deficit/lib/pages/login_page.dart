@@ -64,6 +64,8 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ]),
                       onPressed: () async {
+                        DateTime dt = DateTime.now();
+                        String date = "${dt.month}/${dt.day}/${dt.year}";
                         var map = <String, dynamic>{};
                         String email = userController.text;
                         String pass = passController.text;
@@ -82,10 +84,13 @@ class _LoginPageState extends State<LoginPage> {
                           print(response['body']);
                         }
                         if(response['statusCode'] == 200){
+                          String date = '';
+                          DateTime now = DateTime.now();
+                          date = "${now.month}/${now.day}/${now.year}";
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => InputPage(email: userController.text, pass: passController.text),
+                              builder: (context) => InputPage(email: userController.text, pass: passController.text, date: date),
                             ),
                           );
                         }

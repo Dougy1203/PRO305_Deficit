@@ -57,6 +57,7 @@ def lambda_handler(event, context):
                 temp_log['protein'] = int(log['protein'])
                 temp_log['carb'] = int(log['carb'])
                 temp_log['calories'] = int(log['calories'])
+                temp_log['date'] = log['date']
                 final_logs.append(temp_log)
             return response(200, final_logs)
         except Exception as e:
@@ -67,7 +68,7 @@ def lambda_handler(event, context):
 
 # loc = lambda_handler({
 #     'body' : {
-#         'email' : 'jblaze@gmail.com',
+#         'email' : 'liamd1203@gmail.com',
 #         'password' : 'root',
 #         }
 #     },

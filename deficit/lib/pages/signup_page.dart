@@ -85,6 +85,7 @@ class _SignupPageState extends State<SignupPage> {
                         var map = <String, dynamic>{};
                         map['firstName'] = fNameController.text;
                         map['lastName'] = lNameController.text;
+                        map['message'] = "Your Email $email Has Been Used to Create an Account with Deficit";
                         map['email'] = email;
                         map['password'] = pass;
                         map['goal'] = {};
@@ -95,17 +96,9 @@ class _SignupPageState extends State<SignupPage> {
                         if(kDebugMode) {
                           print(request);
                         }
-
                         final response = await post(kDomain, 'user', json.encode(request));
-                        if (kDebugMode) {
-                          print(response['statusCode']);
-                          print(response['body']);
-                        }
                         final response2 = await post(kDomain, 'log', json.encode(request));
-                        if (kDebugMode) {
-                          print(response2['statusCode']);
-                          print(response2['body']);
-                        }
+                        final response3 = await post(kDomain, 'email', json.encode(request));
                         if(response['statusCode'] == 200 && response2['statusCode'] == 200){
                           Navigator.pushReplacement(
                             context,
